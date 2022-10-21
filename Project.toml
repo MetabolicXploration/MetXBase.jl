@@ -1,0 +1,13 @@
+name = "MetXBase"
+uuid = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
+authors = ["josePereiro <jose.pereiro.personal@gmail.com> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1.6"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
