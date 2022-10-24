@@ -3,6 +3,11 @@ uuid = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
 authors = ["josePereiro <jose.pereiro.personal@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+COBREXA = "babc4406-5200-4a30-9033-bf5ae714c842"
+ExtractMacro = "f86d3d12-fd5b-522c-99e9-61577282a1e9"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
 julia = "1.6"
 
