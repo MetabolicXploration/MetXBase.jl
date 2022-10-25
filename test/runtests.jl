@@ -2,8 +2,12 @@ using MetXBase
 using Test
 
 @testset "MetXBase.jl" begin
-    # Write your tests here.
+
+    # empty MetNet
+    MetNet()
     @test true
 
     # TODO: Test convert COBREXA --> MetXNet
+
+
 end

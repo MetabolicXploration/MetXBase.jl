@@ -22,3 +22,4 @@ rxnindex(model, ider) = _getindex(model, reactions, ider)
 
 export geneindex
 geneindex(model, ider) = _getindex(model, genes, ider)
+

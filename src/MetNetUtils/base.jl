@@ -18,3 +18,9 @@ hash(m::MetNet, h::Int = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub, h))
 
 import Base.show
 show(io::IO, m::MetNet) = summary(io, m)
+
+import Base.empty!
+_empty!(::Nothing) = nothing
+_empty!(o) = empty!(o)
+empty!(m::MetNet, fields = fieldnames(typeof(m))) =
+    foreach((f) -> _empty!(getfield(m, f)), fields)

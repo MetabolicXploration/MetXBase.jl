@@ -12,6 +12,7 @@ module MetXBase
     #! include .
 
     #! include Types
+    include("Types/AbstractMetNets.jl")
     include("Types/MetNets.jl")
     
     #! include Utils
@@ -19,6 +20,7 @@ module MetXBase
     include("Utils/iders_interface.jl")
     include("Utils/net_interface.jl")
     include("Utils/printing.jl")
+    include("Utils/tools.jl")
     
     #! include MetNetUtils
     include("MetNetUtils/balance_str.jl")

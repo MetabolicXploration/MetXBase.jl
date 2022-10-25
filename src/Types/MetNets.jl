@@ -1,5 +1,5 @@
 # The basic representation of a metabolic network
-struct MetNet{MT, VT}
+struct MetNet{MT, VT} <: AbstractMetNet
     
     # Constraints data
     S::Union{Nothing, MT}                                          # Stoichiometric matrix M x N sparse
@@ -23,29 +23,39 @@ struct MetNet{MT, VT}
 
     # Extras
     extras::Dict{Any, Any}                                         # to store temp data
-end
 
-function MetNet(
-        S, b, c, lb, ub, mets, rxns, 
-        genes, rxnGeneMat, grRules, metNames, 
-        metFormulas, rxnNames, subSystems, 
-        extras
-    ) 
-    return MetNet{typeof(S), typeof(c)}(
-        S, b, c, lb, ub, mets, rxns, 
-        genes, rxnGeneMat, grRules, metNames, 
-        metFormulas, rxnNames, subSystems, 
-        extras
-    )
+
+
+    function MetNet(
+            S, b, c, lb, ub, mets, rxns, 
+            genes, rxnGeneMat, grRules, metNames, 
+            metFormulas, rxnNames, subSystems, 
+            extras
+        ) 
+        # TODO: this is probably a hack (fix it)
+        MT = typeof(S)
+        VT = Nothing
+        for v in [b, c, lb, ub] # find the non-Nonthing type
+            VT = typeof(v)
+            VT !== Nothing && break
+        end
+        return new{MT, VT}(
+            S, b, c, lb, ub, mets, rxns, 
+            genes, rxnGeneMat, grRules, metNames, 
+            metFormulas, rxnNames, subSystems, 
+            extras
+        )
+    end 
+
 end
 
 # Empty type
 function MetNet(;
-        S = Float64[;;],
-        b = Float64[],
-        c = Float64[],
-        lb = Float64[],
-        ub = Float64[],
+        S = nothing,
+        b = nothing,
+        c = nothing,
+        lb = nothing,
+        ub = nothing,
         
         mets = nothing,
         rxns = nothing,
