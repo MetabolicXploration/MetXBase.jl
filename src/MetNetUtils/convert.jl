@@ -1,4 +1,5 @@
-# COBREXA -> MetNet
+## ------------------------------------------------------------------
+# COBREXA
 import Base.convert
 function convert(::Type{MetNet}, cobxa_model::COBREXA.MetabolicModel)
     net = Dict()
@@ -18,3 +19,13 @@ function convert(::Type{MetNet}, cobxa_model::COBREXA.MetabolicModel)
 
     return MetNet(;net...)
 end
+
+convert(::Type{COBREXA.CoreModel}, net::MetNet) = COBREXA.CoreModel(
+    isnothing(net.S) ? Float64[;;] : net.S,
+    isnothing(net.b) ? Float64[] : net.b,
+    isnothing(net.c) ? Float64[] : net.c,
+    isnothing(net.lb) ? Float64[] : net.lb,
+    isnothing(net.ub) ? Float64[] : net.ub,
+    isnothing(net.rxns) ? String[] : net.rxns,
+    isnothing(net.mets) ? String[] : net.mets,
+)
