@@ -32,19 +32,22 @@ struct MetNet{MT, VT} <: AbstractMetNet
             metFormulas, rxnNames, subSystems, 
             extras
         ) 
-        # TODO: this is probably a hack (fix it)
-        MT = typeof(S)
-        VT = Nothing
-        for v in [b, c, lb, ub] # find the non-Nonthing type
-            VT = typeof(v)
-            VT !== Nothing && break
-        end
-        return new{MT, VT}(
-            S, b, c, lb, ub, mets, rxns, 
-            genes, rxnGeneMat, grRules, metNames, 
-            metFormulas, rxnNames, subSystems, 
-            extras
-        )
+            # TODO: this is probably a hack (fix it)
+            MT = typeof(S)
+            VT = Nothing
+            for v in [b, c, lb, ub] # find the non-Nonthing type
+                VT = typeof(v)
+                VT !== Nothing && break
+            end
+
+            # TODO: do some consistency checking here (types, dims, ect...)
+
+            return new{MT, VT}(
+                S, b, c, lb, ub, mets, rxns, 
+                genes, rxnGeneMat, grRules, metNames, 
+                metFormulas, rxnNames, subSystems, 
+                extras
+            )
     end 
 
 end
