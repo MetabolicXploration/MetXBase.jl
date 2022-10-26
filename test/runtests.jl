@@ -3,9 +3,8 @@ using Test
 
 @testset "MetXBase.jl" begin
 
-    # empty MetNet
-    MetNet()
-    @test true
+    include("getters_tests.jl")
+    include("iders_tests.jl")
 
     # TODO: Test convert COBREXA --> MetXNet
 

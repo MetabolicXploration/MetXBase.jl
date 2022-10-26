@@ -1,6 +1,11 @@
+import Base.convert
+
+## ------------------------------------------------------------------
+# MetNet
+convert(::Type{MetNet}, net::MetNet) = net
+
 ## ------------------------------------------------------------------
 # COBREXA
-import Base.convert
 function convert(::Type{MetNet}, cobxa_model::COBREXA.MetabolicModel)
     net = Dict()
     net[:S] = COBREXA.stoichiometry(cobxa_model)

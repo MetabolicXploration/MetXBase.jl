@@ -1,8 +1,10 @@
+## -------------------------------------------------------------------
 # extras interface
 get_extra(net::MetNet) = net.extras
 
-# TODO: see how we can define 'reactions...' without colliding with COBREXA
+## -------------------------------------------------------------------
 # net interface
+# TODO: see how we can define 'reactions, etc' without colliding with COBREXA
 import COBREXA.metabolites
 export metabolites
 metabolites(net::MetNet) = net.mets
@@ -51,4 +53,14 @@ met_rxns(net::MetNet, ider) = findall(stoi(net, metindex(net, ider), :) .!= 0.0)
 export lin_objective, lin_objective!
 lin_objective(net::MetNet) = net.c
 lin_objective(net::MetNet, ider) = net.c[rxnindex(net, ider)]
-lin_objective!(net::MetNet, ider, val = 1.0) = (net.c[rxnindex(net, ider)] .= 1.0, net.c)
+function lin_objective!(net::MetNet, ider, val = one(eltype(net.c))) 
+    
+    net.c .= zero(eltype(net.c))
+    idxs = rxnindex(net, ider)
+    if idxs isa Int
+        net.c[idxs] = val
+    else
+        net.c[idxs] .= val
+    end
+    return net.c
+end

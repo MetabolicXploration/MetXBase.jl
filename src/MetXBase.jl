@@ -3,8 +3,12 @@
 module MetXBase
 
     using SparseArrays
+    using Serialization
+    using UnicodePlots
     
     import COBREXA
+    import Printf: @sprintf
+
     
     export MetNet
 
@@ -21,6 +25,7 @@ module MetXBase
     include("Utils/net_interface.jl")
     include("Utils/printing.jl")
     include("Utils/tools.jl")
+    include("Utils/toy_model.jl")
     
     #! include MetNetUtils
     include("MetNetUtils/balance_str.jl")
@@ -29,8 +34,11 @@ module MetXBase
     include("MetNetUtils/convert.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
+    include("MetNetUtils/queries.jl")
+    include("MetNetUtils/rxn_str.jl")
     include("MetNetUtils/search.jl")
     include("MetNetUtils/setter.jl")
+    include("MetNetUtils/summary.jl")
     
     #! include IO
     include("IO/load_net.jl")
