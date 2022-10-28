@@ -7,6 +7,7 @@ version = "0.1.0"
 COBREXA = "babc4406-5200-4a30-9033-bf5ae714c842"
 ExtractMacro = "f86d3d12-fd5b-522c-99e9-61577282a1e9"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+RunTestsEnv = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"
 Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
@@ -15,7 +16,8 @@ UnicodePlots = "b8865327-cd53-5732-bb35-84acbb429228"
 julia = "1.6"
 
 [extras]
+Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test"]
+test = ["Test", "Pkg"]

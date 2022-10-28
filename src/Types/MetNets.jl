@@ -24,8 +24,6 @@ struct MetNet{MT, VT} <: AbstractMetNet
     # Extras
     extras::Dict{Any, Any}                                         # to store temp data
 
-
-
     function MetNet(
             S, b, c, lb, ub, mets, rxns, 
             genes, rxnGeneMat, grRules, metNames, 

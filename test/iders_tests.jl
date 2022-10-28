@@ -1,4 +1,10 @@
-function test_iders()
+let
+    println()
+    println("="^60)
+    println("IDER TEST")
+    println("."^60)
+    println()
+
     net = MetXBase.toy_model()
 
     for (i, rxn) in enumerate(reactions(net))
@@ -14,5 +20,5 @@ function test_iders()
     @test_throws ErrorException metindex(net, "met_not_in_model")
     @test_throws ErrorException rxnindex(net, "rxn_not_in_model")
 
+    println()
 end
-test_iders()

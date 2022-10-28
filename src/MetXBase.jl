@@ -20,6 +20,7 @@ module MetXBase
     include("Types/MetNets.jl")
     
     #! include Utils
+    include("Utils/IterChunks.jl")
     include("Utils/extras_interface.jl")
     include("Utils/iders_interface.jl")
     include("Utils/net_interface.jl")
@@ -32,6 +33,7 @@ module MetXBase
     include("MetNetUtils/base.jl")
     include("MetNetUtils/check_dims.jl")
     include("MetNetUtils/convert.jl")
+    include("MetNetUtils/empty_stuf.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")

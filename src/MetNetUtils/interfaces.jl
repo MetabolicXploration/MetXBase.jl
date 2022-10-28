@@ -54,13 +54,8 @@ export lin_objective, lin_objective!
 lin_objective(net::MetNet) = net.c
 lin_objective(net::MetNet, ider) = net.c[rxnindex(net, ider)]
 function lin_objective!(net::MetNet, ider, val = one(eltype(net.c))) 
-    
-    net.c .= zero(eltype(net.c))
+    _setindex!(net.c, zero(eltype(net.c)))
     idxs = rxnindex(net, ider)
-    if idxs isa Int
-        net.c[idxs] = val
-    else
-        net.c[idxs] .= val
-    end
+    _setindex!(net.c, idxs, val)
     return net.c
 end

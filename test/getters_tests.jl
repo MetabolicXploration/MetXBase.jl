@@ -1,4 +1,11 @@
-function test_getters()
+let
+    println()
+    println("="^60)
+    println("GETTER TEST")
+    println("."^60)
+    println()
+
+
     net = MetXBase.toy_model()
     @test metabolites(net) == net.mets
     @test reactions(net) == net.rxns
@@ -17,5 +24,5 @@ function test_getters()
         @test metabolites(net, met) == net.mets[i]
     end
 
+    println()
 end
-test_getters()

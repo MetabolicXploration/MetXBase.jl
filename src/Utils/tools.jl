@@ -71,3 +71,11 @@ function _println_order_summary(io::IO, v;
     println()
 end
 _println_order_summary(v; kwargs...) = _println_order_summary(stdout, v; kwargs...)
+
+# solve broadcast issue
+_setindex!(vec, val) = (vec .= val)
+_setindex!(vec, idxs::Int, val) = (vec[idxs] = val)
+_setindex!(vec, idxs, val) = (vec[idxs] .= val)
+
+_setindex!(mat, idx0::Int, idx1::Int, val) = (mat[idx0, idx1] = val)
+_setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)

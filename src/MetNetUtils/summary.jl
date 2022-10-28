@@ -5,38 +5,57 @@ function summary(io::IO, net::MetNet;
     )
     
     _print_summary_head(io)
+    _print_stoi_summary(io, net)
+    _print_ider_summary(io, net)
     _summary_bound_state(io, net; print_max)
 
-    full || return nothing
-    # histograms
-    _println_order_summary(net.S; 
-        title = "Stoichiometric Matrix", 
-        ylabel = "log10(|S|)",
-        fout = (vi) -> !iszero(vi),
-        vT = (vi) -> log10(abs(vi))
-    )
+    if full
+        # histograms
+        _println_order_summary(net.S; 
+            title = "Stoichiometric Matrix", 
+            ylabel = "log10(|S|)",
+            fout = (vi) -> !iszero(vi),
+            vT = (vi) -> log10(abs(vi))
+        )
 
-    _println_order_summary([net.lb; net.ub]; 
-        title = "Bounds", 
-        ylabel = "[lb; ub]",
-        fout = (vi) -> true,
-        vT = identity
-    )
+        _println_order_summary([net.lb; net.ub]; 
+            title = "Bounds", 
+            ylabel = "[lb; ub]",
+            fout = (vi) -> true,
+            vT = identity
+        )
+    end
+    println()
 
 end
 
 summary(net::MetNet; kwargs...) = summary(stdout, net; kwargs...)
 
-function summary(io::IO, net::MetNet, ider)
+function summary(io::IO, net::MetNet, ider::Int)
     _print_summary_head(io)
-    try
-        _print_rxn_summary(io, net, ider)
+    _print_rxn_summary(io, net, ider)
+    println()
+    _print_met_summary(io, net, ider)
+    println()
+end
+
+function summary(io::IO, net::MetNet, ider::String) 
+    
+    idx = findfirst(isequal(ider), net.mets)
+    if !isnothing(idx) 
+        _print_summary_head(io)
+        _print_met_summary(io, net, idx)
         println()
-    catch end
-    try
-        _print_met_summary(io, net, ider)
+        return
+    end
+    
+    idx = findfirst(isequal(ider), net.rxns)
+    if !isnothing(idx)
+        _print_summary_head(io)
+        _print_rxn_summary(io, net, idx)
         println()
-    catch end
+        return
+    end 
 end
 summary(net::MetNet, ider) = summary(stdout, net, ider)
 
@@ -49,8 +68,8 @@ const ERROR_COLOR = :red
 
 function _print_summary_head(io::IO)
     print(io, "SUMMARY (color code: ")
-    printstyled(io, "warning", color = WARN_COLOR)
-    printstyled(io, ", info", color = INFO_COLOR)
+    printstyled(io, "info", color = INFO_COLOR)
+    printstyled(io, ", warning", color = WARN_COLOR)
     printstyled(io, ", error", color = ERROR_COLOR)
     println(io, ")")
 end
@@ -70,6 +89,7 @@ function _summary_bound_state(io::IO, net::MetNet; print_max = 50)
     # Counple checks
     line_count = 0
     for (i, rxn) in enumerate(net.rxns)
+        isempty(rxn) && continue
         lb = net.lb[i]
         ub = net.ub[i]
         lb > ub && (printstyled(io, "rxn($i): ($rxn), lb ($lb) > ub ($ub)", 
@@ -94,8 +114,47 @@ function _summary_bound_state(io::IO, net::MetNet; print_max = 50)
     blockscount(net) > 0 && printstyled(io, "blocks: $(blockscount(net))", "\n", color = WARN_COLOR)
     fixxedscount(net) > 0 && printstyled(io, "fixxed: $(fixxedscount(net))", "\n", color = INFO_COLOR)
     
-    println()
     return nothing
+end
+
+function _print_ider_summary(io::IO, net::MetNet)
+
+    # allunique
+    for getter in [reactions, metabolites, genes]
+        vec = getter(net)
+        label = nameof(getter)
+        allunique(vec) || printstyled(io, 
+            string("Not unique iders at ", label), 
+            "\n", color = ERROR_COLOR
+        )
+        any(isempty.(vec)) && printstyled(io, 
+            string("empty ", label, " iders: ", count(isempty.(vec))), 
+            "\n", color = WARN_COLOR
+        )
+    end
+end
+
+function _print_stoi_summary(io::IO, net::MetNet)
+
+    printstyled(io, 
+        string("size: ", size(net.S)), 
+        "\n", color = INFO_COLOR
+    )
+    
+    # nz entreme
+    s0 = Inf
+    s1 = -Inf
+    for s in net.S
+        iszero(s) && continue
+        abs(s) < s0 && (s0 = s)
+        abs(s) > s1 && (s1 = s)
+    end
+
+    printstyled(io, 
+        string("S order: ", (s0, s1)), 
+        "\n", color = INFO_COLOR
+    )
+
 end
 
 function _print_col_summary(io::IO, col, name; 

@@ -2,6 +2,7 @@
 # In must cases just a Dict
 
 # TODO: pretty print extras
+# TODO: create a cache_rebuild needed interface/recommendation
 
 export set_extra!
 set_extra!(obj, k, val) = setindex!(get_extra(obj), val, k)
