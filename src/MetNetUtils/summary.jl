@@ -25,7 +25,6 @@ function summary(io::IO, net::MetNet;
             vT = identity
         )
     end
-    println()
 
 end
 

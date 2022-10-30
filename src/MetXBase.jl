@@ -5,6 +5,7 @@ module MetXBase
     using SparseArrays
     using Serialization
     using UnicodePlots
+    using ProgressMeter
     
     import COBREXA
     import Printf: @sprintf
@@ -22,6 +23,7 @@ module MetXBase
     #! include Utils
     include("Utils/IterChunks.jl")
     include("Utils/extras_interface.jl")
+    include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
     include("Utils/net_interface.jl")
     include("Utils/printing.jl")

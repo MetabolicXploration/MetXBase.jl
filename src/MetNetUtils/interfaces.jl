@@ -10,15 +10,28 @@ export metabolites
 metabolites(net::MetNet) = net.mets
 metabolites(net::MetNet, ider) = net.mets[metindex(net, ider)]
 
+export eachmets
+eachmets(net) = eachindex(metabolites(net))
+
 import COBREXA.reactions
 export reactions
 reactions(net::MetNet) = net.rxns
 reactions(net::MetNet, ider) = net.rxns[rxnindex(net, ider)]
 
+export eachrxns
+eachrxns(net) = eachindex(reactions(net))
+
 import COBREXA.genes
 export genes
 genes(net::MetNet) = net.genes
 genes(net::MetNet, ider) = net.genes[geneindex(net, ider)]
+
+export eachrxns
+eachgenes(net) = eachindex(genes(net))
+
+export rxnrange
+rxnrange(net) = (ub(net) .- lb(net))
+rxnrange(net, ider) = (idx = rxnindex(net, ider); ub(net, idx) .- lb(net, idx))
 
 export ub
 ub(net::MetNet) = net.ub
@@ -53,9 +66,10 @@ met_rxns(net::MetNet, ider) = findall(stoi(net, metindex(net, ider), :) .!= 0.0)
 export lin_objective, lin_objective!
 lin_objective(net::MetNet) = net.c
 lin_objective(net::MetNet, ider) = net.c[rxnindex(net, ider)]
-function lin_objective!(net::MetNet, ider, val = one(eltype(net.c))) 
+function lin_objective!(net::MetNet, ider, val) 
     _setindex!(net.c, zero(eltype(net.c)))
     idxs = rxnindex(net, ider)
     _setindex!(net.c, idxs, val)
     return net.c
 end
+lin_objective!(net::MetNet, val) = lin_objective!(net, Colon(), val) 
