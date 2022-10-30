@@ -14,7 +14,7 @@ using Test
     # MetNet
     include("getters_tests.jl")
     include("iders_tests.jl")
-    include("empty_iders.jl")s
+    include("empty_iders.jl")
 
     # TODO: Test convert COBREXA --> MetXNet
 
