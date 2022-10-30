@@ -1,7 +1,7 @@
 name = "MetXBase"
 uuid = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
 authors = ["josePereiro <jose.pereiro.personal@gmail.com> and contributors"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 RunTestsEnv = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"
