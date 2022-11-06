@@ -9,10 +9,14 @@ balance!(net::MetNet, metider, val) =
 export ub!
 ub!(net::MetNet, rxnider, val) = 
     (_setindex!(net.ub, rxnindex(net, rxnider), val); net)
+ub!(net::MetNet, val) = 
+    (_setindex!(net.ub, Colon(), val); net)
 
 export lb!
 lb!(net::MetNet, rxnider, val) = 
     (_setindex!(net.lb, rxnindex(net, rxnider), val); net)
+lb!(net::MetNet, val) = 
+    (_setindex!(net.lb, Colon(), val); net)
 
 export bounds!
 function bounds!(net::MetNet, ider, lb, ub)

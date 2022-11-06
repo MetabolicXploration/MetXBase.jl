@@ -6,6 +6,7 @@ module MetXBase
     using Serialization
     using UnicodePlots
     using ProgressMeter
+    using Statistics
     
     import COBREXA
     import Printf: @sprintf
@@ -35,7 +36,9 @@ module MetXBase
     include("MetNetUtils/base.jl")
     include("MetNetUtils/check_dims.jl")
     include("MetNetUtils/convert.jl")
+    include("MetNetUtils/del_stuf.jl")
     include("MetNetUtils/empty_stuf.jl")
+    include("MetNetUtils/fixxed_reduction.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")

@@ -79,3 +79,5 @@ _setindex!(vec, idxs, val) = (vec[idxs] .= val)
 
 _setindex!(mat, idx0::Int, idx1::Int, val) = (mat[idx0, idx1] = val)
 _setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)
+
+_index_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is...]

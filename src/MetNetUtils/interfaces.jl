@@ -18,15 +18,15 @@ export reactions
 reactions(net::MetNet) = net.rxns
 reactions(net::MetNet, ider) = net.rxns[rxnindex(net, ider)]
 
-export eachrxns
-eachrxns(net) = eachindex(reactions(net))
+export eachrxn
+eachrxn(net) = eachindex(reactions(net))
 
 import COBREXA.genes
 export genes
 genes(net::MetNet) = net.genes
 genes(net::MetNet, ider) = net.genes[geneindex(net, ider)]
 
-export eachrxns
+export eachrxn
 eachgenes(net) = eachindex(genes(net))
 
 export rxnrange

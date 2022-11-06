@@ -53,74 +53,26 @@ function empty_void_iders!(net::MetNet;
     return net
 end
 
-# Reduce the stoi matrix by del the fixxed mets
-export empty_fixxed!
-function empty_fixxed!(net::MetNet; eps = 0.0, protect = [])
-
-    protect = rxnindex(net, protect)
-
-    M, N = size(net)
-
-    non_protected = trues(N)
-    non_protected[protect] .= false
-
-    # up bounds
-    fixxed = falses(N)
-    for ri in findall(non_protected)
-        if net.lb[ri] == net.ub[ri] # fixxed
-            fixxed[ri] = iszero(eps)
-            net.ub[ri], net.lb[ri] = (net.lb[ri] - eps), (net.ub[ri] + eps)
-        end
-    end
-    
-    # balance
-    net.b .= net.b - net.S * (fixxed .* net.lb)
-
-    # del 
-    empty_rxn!(net, findall(fixxed))
-
-    return net
-end
-
 # TODO: Test all this
 # return a model without EMPTY_SPOT iders
 export emptyless_model
 function emptyless_model(net::MetNet)
-
-    # TODO: find this rxnGeneMat goes
-
-    netd = Dict()
-    met_idxs, rxn_idxs, genes_idxs = nothing, nothing, nothing
+    
+    met_idxs, rxn_idxs, genes_idxs = Colon(), Colon(), Colon()
     
     if !isnothing(net.mets)
         met_idxs = findall(net.mets .!= EMPTY_SPOT)
-        netd[:mets] = _index_or_nothing(net.mets, met_idxs)
-        netd[:metNames] = _index_or_nothing(net.metNames, met_idxs)
-        netd[:metFormulas] = _index_or_nothing(net.metFormulas, met_idxs)
-        netd[:b] = _index_or_nothing(net.b, met_idxs)
     end
     
     if !isnothing(net.rxns)
         rxn_idxs = findall(net.rxns .!= EMPTY_SPOT)
-        netd[:rxns] = _index_or_nothing(net.rxns, rxn_idxs)
-        netd[:rxnNames] = _index_or_nothing(net.rxnNames, rxn_idxs)
-        netd[:c] = _index_or_nothing(net.c, rxn_idxs)
-        netd[:lb] = _index_or_nothing(net.lb, rxn_idxs)
-        netd[:ub] = _index_or_nothing(net.ub, rxn_idxs)
-        netd[:subSystems] = _index_or_nothing(net.rxnNames, rxn_idxs)
-        netd[:grRules] = _index_or_nothing(net.grRules, rxn_idxs)
     end
     
     if !isnothing(net.genes)
         genes_idxs = findall(net.genes .!= EMPTY_SPOT)
-        netd[:genes] = _index_or_nothing(net.genes, genes_idxs)
     end
 
-    if !isnothing(net.rxns) && !isnothing(net.mets)
-        netd[:S] = _index_or_nothing(net.S, met_idxs, rxn_idxs)
-    end
-
-    return MetNet(; netd...)
+    return del_iders(net::MetNet;
+        met_idxs, rxn_idxs, genes_idxs,
+    )
 end
-
-_index_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is...]
