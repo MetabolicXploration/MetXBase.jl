@@ -5,6 +5,9 @@ using MetXBase
 using MetXNetHub
 using Test
 
+import Random
+Random.seed!(1234)
+
 @testset "MetXBase.jl" begin
 
     # Utils†
