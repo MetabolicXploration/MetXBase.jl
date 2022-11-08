@@ -5,6 +5,11 @@ get_extra(net::MetNet) = net.extras
 ## -------------------------------------------------------------------
 # net interface
 # TODO: see how we can define 'reactions, etc' without colliding with COBREXA
+export matrix_type
+matrix_type(::MetNet{MT, VT}) where {MT, VT} = MT
+export vector_type
+vector_type(::MetNet{MT, VT}) where {MT, VT} = VT
+
 import COBREXA.metabolites
 export metabolites
 metabolites(net::MetNet) = net.mets
@@ -73,3 +78,5 @@ function lin_objective!(net::MetNet, ider, val)
     return net.c
 end
 lin_objective!(net::MetNet, val) = lin_objective!(net, Colon(), val) 
+
+metnet(net::MetNet) = net

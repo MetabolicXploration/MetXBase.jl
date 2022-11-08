@@ -40,7 +40,7 @@ end
 
 function summary(io::IO, net::MetNet, ider::String) 
     
-    idx = findfirst(isequal(ider), net.mets)
+    idx = isnothing(net.mets) ? nothing : findfirst(isequal(ider), net.mets)
     if !isnothing(idx) 
         _print_summary_head(io)
         _print_met_summary(io, net, idx)
@@ -48,7 +48,7 @@ function summary(io::IO, net::MetNet, ider::String)
         return
     end
     
-    idx = findfirst(isequal(ider), net.rxns)
+    idx = idx = isnothing(net.rxns) ? nothing : findfirst(isequal(ider), net.rxns)
     if !isnothing(idx)
         _print_summary_head(io)
         _print_rxn_summary(io, net, idx)
@@ -76,6 +76,10 @@ end
 function _summary_bound_state(io::IO, net::MetNet; print_max = 50)
     
     M, N = size(net)
+
+    (isnothing(net.lb) || isnothing(net.ub)) && (
+        (printstyled(io, "lb and ub boths equal `nothing`", "\n", color = ERROR_COLOR); return)
+    )
 
     all(iszero(net.lb)) && all(iszero(net.ub)) && 
         (printstyled(io, "lb and ub boths has only zero elements", "\n", color = ERROR_COLOR); return)
@@ -122,6 +126,10 @@ function _print_ider_summary(io::IO, net::MetNet)
     for getter in [reactions, metabolites, genes]
         vec = getter(net)
         label = nameof(getter)
+        isnothing(vec) && (printstyled(io, 
+            string(label, " === nothing"), 
+            "\n", color = ERROR_COLOR
+        ); continue)
         allunique(vec) || printstyled(io, 
             string("Not unique iders at ", label), 
             "\n", color = ERROR_COLOR
@@ -134,6 +142,8 @@ function _print_ider_summary(io::IO, net::MetNet)
 end
 
 function _print_stoi_summary(io::IO, net::MetNet)
+
+    isnothing(net.S) && return
 
     printstyled(io, 
         string("size: ", size(net.S)), 
@@ -176,17 +186,27 @@ end
 # ------------------------------------------------------------------
 # Rxns
 function _print_rxn_summary(io::IO, net, ider)
+    isnothing(net.rxns) && return
     idx = rxnindex(net, ider)
-    printstyled(io, " rxn[$idx]: ", net.rxns[idx], " (", get(net.rxnNames, idx, ""), ")\n", color = INFO_COLOR)
-    printstyled(io, " lb: ", net.lb[idx], ", ub: ", net.ub[idx], "\n" , color = INFO_COLOR)
+    
+    printstyled(io, 
+        " rxn[$idx]: ", net.rxns[idx], " (", _get(net.rxnNames, idx, ""), ")\n", 
+        color = INFO_COLOR
+    )
+    printstyled(io, 
+        " lb: ", _get(net.lb, idx, nothing), 
+        ", ub: ", _get(net.ub, idx, nothing), "\n" , 
+        color = INFO_COLOR
+    )
     printstyled(io, " ", rxn_str(net, idx), "\n" , color = INFO_COLOR)
 end
 
 # ------------------------------------------------------------------
 # Mets
 function _print_met_summary(io::IO, net, ider)
+    isnothing(net.mets) && return
     idx = metindex(net, ider)
-    printstyled(io, " met[$idx]: ", net.mets[idx], " (", get(net.metNames, idx, ""), ")\n", color = INFO_COLOR)
+    printstyled(io, " met[$idx]: ", net.mets[idx], " (", _get(net.metNames, idx, ""), ")\n", color = INFO_COLOR)
     printstyled(io, " ", balance_str(net, ider), color = INFO_COLOR)
 end
 

@@ -1,17 +1,17 @@
 # MetNet
 import Base.size
-size(metnet::MetNet) = size(metnet.S)
-size(metnet::MetNet, dim) = size(metnet.S, dim)
+size(net::MetNet) = size(net.S)
+size(net::MetNet, dim) = size(net.S, dim)
 
 import Base.==
-function ==(metnet1::MetNet, metnet2::MetNet)
-    return metnet1.S == metnet2.S && metnet1.lb == metnet2.lb &&
-    metnet1.ub == metnet2.ub && metnet1.mets == metnet2.mets &&
-    metnet1.rxns == metnet2.rxns
+function ==(net1::MetNet, net2::MetNet)
+    return net1.S == net2.S && net1.lb == net2.lb &&
+    net1.ub == net2.ub && net1.mets == net2.mets &&
+    net1.rxns == net2.rxns
 end
 
 import Base.isequal
-isequal(metnet1::MetNet, metnet2::MetNet) = (metnet1 == metnet2)
+isequal(net1::MetNet, net2::MetNet) = (net1 == net2)
 
 import Base.hash
 hash(m::MetNet, h::Int = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub, h))

@@ -94,3 +94,4 @@ function MetNet(template::MetNet; to_overwrite...)
     
     return MetNet(;new_metnet_dict...)
 end
+
