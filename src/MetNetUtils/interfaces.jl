@@ -1,6 +1,6 @@
 ## -------------------------------------------------------------------
 # extras interface
-get_extra(net::MetNet) = net.extras
+extras(net::MetNet) = net.extras
 
 ## -------------------------------------------------------------------
 # net interface

@@ -20,7 +20,7 @@ function echelonize(net::MetNet; eps = 1e-10)
         mets = ["M$i" for i in 1:Ni]                # mets lost meaning 
     )
 
-    set_extra!(net1, "RXNIDX_MAP", idxmap)
+    extras!(net1, "RXNIDX_MAP", idxmap)
 
     return net1
 end

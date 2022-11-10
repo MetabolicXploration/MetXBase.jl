@@ -8,8 +8,8 @@ let
 
 
     net0 = MetXNetHub.pull_net("ecoli_core")
-    biom_ider = get_extra(net0, "BIOM")
-    glc_ider = get_extra(net0, "EX_GLC")
+    biom_ider = extras(net0, "BIOM")
+    glc_ider = extras(net0, "EX_GLC")
     S = net0.S
     b = net0.b
     M, N = size(S)

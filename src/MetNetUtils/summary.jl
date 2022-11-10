@@ -75,7 +75,10 @@ end
 
 function _summary_bound_state(io::IO, net::MetNet; print_max = 50)
     
-    M, N = size(net)
+    M, N = 0, 0
+    if !isnothing(net.S)
+        M, N = size(net.S)
+    end
 
     (isnothing(net.lb) || isnothing(net.ub)) && (
         (printstyled(io, "lb and ub boths equal `nothing`", "\n", color = ERROR_COLOR); return)
