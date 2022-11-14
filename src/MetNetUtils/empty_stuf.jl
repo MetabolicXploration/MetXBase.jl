@@ -72,7 +72,7 @@ function emptyless_model(net::MetNet)
         genes_idxs = findall(net.genes .!= EMPTY_SPOT)
     end
 
-    return del_iders(net::MetNet;
+    return reindex(net::MetNet;
         met_idxs, rxn_idxs, genes_idxs,
     )
 end

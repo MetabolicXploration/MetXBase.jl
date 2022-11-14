@@ -5,6 +5,9 @@ extras(net::MetNet) = net.extras
 ## -------------------------------------------------------------------
 # net interface
 # TODO: see how we can define 'reactions, etc' without colliding with COBREXA
+
+metnet(net::MetNet) = net
+
 export matrix_type
 matrix_type(::MetNet{MT, VT}) where {MT, VT} = MT
 export vector_type
@@ -79,4 +82,3 @@ function lin_objective!(net::MetNet, ider, val)
 end
 lin_objective!(net::MetNet, val) = lin_objective!(net, Colon(), val) 
 
-metnet(net::MetNet) = net

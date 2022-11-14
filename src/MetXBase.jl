@@ -25,6 +25,7 @@ module MetXBase
     
     #! include Utils
     include("Utils/IterChunks.jl")
+    include("Utils/callback_utils.jl")
     include("Utils/echelonize.jl")
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
@@ -39,13 +40,13 @@ module MetXBase
     include("MetNetUtils/base.jl")
     include("MetNetUtils/check_dims.jl")
     include("MetNetUtils/convert.jl")
-    include("MetNetUtils/del_stuf.jl")
     include("MetNetUtils/echelonize.jl")
     include("MetNetUtils/empty_stuf.jl")
     include("MetNetUtils/fixxed_reduction.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")
+    include("MetNetUtils/reindex.jl")
     include("MetNetUtils/rxn_str.jl")
     include("MetNetUtils/search.jl")
     include("MetNetUtils/setter.jl")

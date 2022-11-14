@@ -14,7 +14,7 @@ function empty_fixxed!(net::MetNet; eps = 0.0, protect = [])
     for ri in findall(non_protected)
         if net.lb[ri] == net.ub[ri] # fixxed
             fixxed[ri] = iszero(eps)
-            net.ub[ri], net.lb[ri] = (net.lb[ri] - eps), (net.ub[ri] + eps)
+            net.lb[ri], net.ub[ri] = (net.lb[ri] - eps), (net.ub[ri] + eps)
         end
     end
     

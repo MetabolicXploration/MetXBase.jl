@@ -1,5 +1,6 @@
 # A common interface for accessing the network
 # The methods to be implemented are the accessors (e.g. metabolites)
+# metnet
 
 export mets_count
 mets_count(net) = length(metabolites(net))

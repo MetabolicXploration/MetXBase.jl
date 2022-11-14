@@ -1,8 +1,8 @@
 # This will allow to refer elements by different ider representations (e.g. Int or String)
 
 _getindex(model, getter, ider::Integer) = ider
-_getindex(model, getter, ::Colon) = eachindex(getter(model))
 _getindex(model, getter, ider::UnitRange) = ider
+_getindex(model, getter, ::Colon) = isnothing(getter(model)) ? Colon() : eachindex(getter(model))
 _getindex(model, getter, ider::Vector{<:Integer}) = ider
 _getindex(model, getter, iders::Vector{<:AbstractString}) = [_getindex(model, getter, ider) for ider in iders]
 function _getindex(model, getter, ider::AbstractString) 

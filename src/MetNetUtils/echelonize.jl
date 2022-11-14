@@ -12,10 +12,10 @@ function echelonize(net::MetNet; eps = 1e-10)
     net1 = MetNet(;
         S = convert(MT, IG),
         b = convert(VT, bnew),
-        rxns = _index_or_nothing(net.rxns, idxmap),
-        lb = _index_or_nothing(net.lb, idxmap),
-        ub = _index_or_nothing(net.ub, idxmap),
-        c = _index_or_nothing(net.c, idxmap),
+        rxns = _getindex_or_nothing(net.rxns, idxmap),
+        lb = _getindex_or_nothing(net.lb, idxmap),
+        ub = _getindex_or_nothing(net.ub, idxmap),
+        c = _getindex_or_nothing(net.c, idxmap),
         extras = copy(net.extras),
         mets = ["M$i" for i in 1:Ni]                # mets lost meaning 
     )
