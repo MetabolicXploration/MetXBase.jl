@@ -1,32 +1,40 @@
-# ## ------------------------------------------------------------------
-# struct EchelonMetNet{MT, VT} <: AbstractMetNet
+## ------------------------------------------------------------------
+export EchelonMetNet
+struct EchelonMetNet{MT, VT} <: AbstractMetNet
 
-#     IG::MT                                      # net.S in echelon forms 
-#     ech_b::VT                                   # net.b after the reduction
-    
-#     rxns::Vector{String}
+    net::MetNet{MT, VT}   # The new ech network
 
-#     # mapping
-#     idxind::Vector{Int}
-#     idxdep::Vector{Int}
-#     idxmap::Vector{Int}                         # mapping from EchelonMetNet to the src MetNet reactions
+    # mapping
+    idxf::Vector{Int}
+    idxd::Vector{Int}
 
-#     # src
-#     net::MetNet{MT, VT}                         # A reference to the original (use for metadata)
+    # extras
+    extras::Dict
 
-#     function EchelonMetNet(net::MetNet; 
-#             eps = 1e-10
-#         )
+    function EchelonMetNet(net::MetNet; tol = 1e-10)
 
-#         # cache net    
-#         idxind, idxdep, idxmap, IG, ech_b = echelonize(net.S, net.b; eps)
+        # cache net    
+        idxf, idxd, idxmap, G, be = echelonize(net.S, net.b; tol)
+        idxmap_inv = sortperm(idxmap)
+        Nd, _ = size(G)
+        IG = hcat(Matrix(I, Nd, Nd), G)[:, idxmap_inv]
         
-#         MT = matrix_type(net)
-#         VT = vector_type(net)
+        MT = matrix_type(net)
+        VT = vector_type(net)
 
-#         IG = convert(MT, IG)
-#         return new{MT, VT}(IG, ech_b)
+        net1 = MetNet(;
+            S = convert(MT, IG),
+            b = convert(VT, be),
+            rxns = _getindex_or_nothing(net.rxns, Colon()),
+            lb = _getindex_or_nothing(net.lb, Colon()),
+            ub = _getindex_or_nothing(net.ub, Colon()),
+            c = _getindex_or_nothing(net.c, Colon()),
+            extras = copy(net.extras),
+            mets = String["M$i" for i in 1:Nd] # mets lost meaning
+        )
 
-#     end
+        return new{MT, VT}(net1, idxf, idxd, Dict())
+    end
 
-# end
+    EchelonMetNet() = new{Nothing, Nothing}(MetNet(), Int[], Int[], Dict())
+end

@@ -13,7 +13,6 @@ end
 _getindex(model, getter, iders) = (eltype(iders) <: AbstractString) ?
         [_getindex(model, getter, ider) for ider in iders] : iders
 
-# This will allow to refer elements by different ider representations (e.g. Int or String)
 export metindex
 metindex(model, ider) = _getindex(model, metabolites, ider)
 

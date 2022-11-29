@@ -27,9 +27,12 @@ module MetXBase
     include("Utils/IterChunks.jl")
     include("Utils/callback_utils.jl")
     include("Utils/echelonize.jl")
+    include("Utils/echelonize2.jl")
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
+    include("Utils/mgrscho.jl")
+    include("Utils/nearPD.jl")
     include("Utils/net_interface.jl")
     include("Utils/printing.jl")
     include("Utils/tools.jl")
@@ -52,6 +55,10 @@ module MetXBase
     include("MetNetUtils/setter.jl")
     include("MetNetUtils/summary.jl")
     
+    
+    #! include EchelonMetNetUtils
+    include("EchelonMetNetUtils/net_interface.jl")
+
     #! include IO
     include("IO/load_net.jl")
     

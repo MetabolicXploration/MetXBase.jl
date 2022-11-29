@@ -1,4 +1,4 @@
-# A common interface for accessing the network
+# A common interface for handling a MetNet-like object
 # The methods to be implemented are the accessors (e.g. metabolites)
 # metnet
 

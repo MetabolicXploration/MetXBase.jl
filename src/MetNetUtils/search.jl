@@ -19,6 +19,7 @@ function search(fun::Function, net, hint;
     up_hint = up(hint)
     for field in fields
         dat = getfield(net, field)
+        isnothing(dat) && continue
         push!(fun_, map(idx -> (dat[idx], idx), findall(fun, dat))...)
         push!(eqs_, map(idx -> (dat[idx], idx), findall(x-> up(x) == up_hint, dat))...)
         push!(stw_, map(idx -> (dat[idx], idx), findall(x-> startswith(up(x), up_hint), dat))...)

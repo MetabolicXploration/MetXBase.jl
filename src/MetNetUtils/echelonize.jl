@@ -1,26 +1,26 @@
-indep_rxns(net::MetNet; kwargs...) = indep_rxns(net.S; kwargs...)
+basis_rxns(net::MetNet; kwargs...) = basis_rxns(net.S, net.b; kwargs...)
 
-function echelonize(net::MetNet; eps = 1e-10)
+function echelonize(net::MetNet; tol = 1e-10)
 
-    idxind, _, idxmap, IG, bnew = echelonize(net.S, net.b; eps)
+    _, _, idxmap, G, be = echelonize(net.S, net.b; tol)
+    idxmap_inv = sortperm(idxmap)
+    Nd, _ = size(G)
+    IG = hcat(Matrix(I, Nd, Nd), G)[:, idxmap_inv]
+    # spy(S)
 
-    MT = matrix_type(net)
-    VT = vector_type(net)
+    MT = typeof(net.S)
+    VT = typeof(net.b)
     
-    Ni = length(idxind)
-
     net1 = MetNet(;
         S = convert(MT, IG),
-        b = convert(VT, bnew),
-        rxns = _getindex_or_nothing(net.rxns, idxmap),
-        lb = _getindex_or_nothing(net.lb, idxmap),
-        ub = _getindex_or_nothing(net.ub, idxmap),
-        c = _getindex_or_nothing(net.c, idxmap),
+        b = convert(VT, be),
+        rxns = _getindex_or_nothing(net.rxns, Colon()),
+        lb = _getindex_or_nothing(net.lb, Colon()),
+        ub = _getindex_or_nothing(net.ub, Colon()),
+        c = _getindex_or_nothing(net.c, Colon()),
         extras = copy(net.extras),
-        mets = ["M$i" for i in 1:Ni]                # mets lost meaning 
+        mets = ["M$i" for i in 1:Nd] # mets lost meaning
     )
-
-    extras!(net1, "RXNIDX_MAP", idxmap)
 
     return net1
 end

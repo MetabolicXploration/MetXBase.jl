@@ -1,12 +1,12 @@
-# make stuff dense
-_dense_vecs(v) = (v isa SparseVector) ? Vector(v) : v
+_dense(S::AbstractMatrix) = (S isa DenseMatrix) ? S : Matrix(S)
+_dense(v::AbstractVector) = (v isa DenseVector) ? v : Vector(v) 
 
 # TODO: make a dense/sparse api
 dense_vecs(net::MetNet) = MetNet(net; 
-    lb = _dense_vecs(net.lb),
-    ub = _dense_vecs(net.ub),
-    c = _dense_vecs(net.c),
-    b = _dense_vecs(net.b),
+    lb = _dense(net.lb),
+    ub = _dense(net.ub),
+    c = _dense(net.c),
+    b = _dense(net.b),
 )
 
 export extract_fields
