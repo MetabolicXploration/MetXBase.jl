@@ -32,12 +32,13 @@ let
     @test isempty(intersect(idxind, idxdep))
 
     # net
-    net1 = echelonize(net0)
+    net1 = EchelonMetNet(net0)
     @show size(net1)
     # TODO: test FBA
     @test rank(net0.S) == rank(net1.S)
     @test all(net1.b .== bnew)
     @test all(reactions(net1) .== reactions(net0, idxmap))
+    @test sum(net.S[:, enet.idxd] .== 1.0) .== length(enet.idxd)
 
     println()
 end
