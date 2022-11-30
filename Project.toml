@@ -19,6 +19,7 @@ julia = "1.6"
 [extras]
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+RunTestsEnv = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"
 
 [targets]
-test = ["Test", "Pkg"]
+test = ["Test", "Pkg", "RunTestsEnv"]
