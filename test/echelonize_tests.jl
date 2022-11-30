@@ -15,30 +15,31 @@ let
     @show size(net0)
 
     # basis_rxns
-    @time idxdep = basis_rxns(S, b; tol = 1e-10)
-    @show length(idxdep)
-    @test rank(S) == length(idxdep)
+    @time idxd = basis_rxns(S, b; tol = 1e-10)
+    @show length(idxd)
+    @test rank(S) == length(idxd)
     
     # echelonize
-    @time idxind, idxdep, idxmap, G, bnew = echelonize(S, b; tol = 1e-10)
-    Ni = length(idxind)
-    Nd = length(idxdep)
+    @time idxf, idxd, idxmap, G, be = echelonize(S, b; tol = 1e-10)
+    Nf = length(idxf)
+    Nd = length(idxd)
     @show size(G)
-    @test Ni + Nd == N
+    @test Nf + Nd == N
     @test all(sort(idxmap) .== collect(1:N))
     # TODO: check if G needs to be full ranked
-    # @test rank(G) == Ni
-    @test length(bnew) == rank(S)
-    @test isempty(intersect(idxind, idxdep))
+    # @test rank(G) == Nf
+    @test length(be) == rank(S)
+    @test isempty(intersect(idxf, idxd))
 
     # net
-    net1 = EchelonMetNet(net0)
+    enet = EchelonMetNet(net0)
+    net1 = metnet(enet)
     @show size(net1)
     # TODO: test FBA
     @test rank(net0.S) == rank(net1.S)
-    @test all(net1.b .== bnew)
-    @test all(reactions(net1) .== reactions(net0, idxmap))
-    @test sum(net.S[:, enet.idxd] .== 1.0) .== length(enet.idxd)
+    @test all(net1.b .== be)
+    @test all(reactions(net1) .== reactions(net0))
+    @test isapprox(net1.S[:, enet.idxd],  Matrix(I, Nd, Nd); atol = 1e-5)
 
     println()
 end
