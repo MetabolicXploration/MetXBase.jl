@@ -1,7 +1,7 @@
 name = "MetXBase"
 uuid = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
 authors = ["The members of MetabolicXploration"]
-version = "0.1.8"
+version = "0.1.9"
 
 [deps]
 Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
