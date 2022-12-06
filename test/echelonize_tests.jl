@@ -35,7 +35,7 @@ let
     enet = EchelonMetNet(net0)
     net1 = metnet(enet)
     @show size(net1)
-    # TODO: test FBA
+    # DONE: test FBA (see MetXOptim)
     @test rank(net0.S) == rank(net1.S)
     @test all(net1.b .== be)
     @test all(reactions(net1) .== reactions(net0))

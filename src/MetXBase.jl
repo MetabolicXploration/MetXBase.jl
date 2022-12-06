@@ -57,7 +57,9 @@ module MetXBase
     
     
     #! include EchelonMetNetUtils
+    include("EchelonMetNetUtils/base.jl")
     include("EchelonMetNetUtils/net_interface.jl")
+    include("EchelonMetNetUtils/summary.jl")
 
     #! include IO
     include("IO/load_net.jl")
