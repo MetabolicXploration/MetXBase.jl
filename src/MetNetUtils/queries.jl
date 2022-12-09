@@ -6,6 +6,7 @@ export isblocked
 isblocked(net::MetNet, ider) = (indx = rxnindex(net, ider); 
     net.lb[indx] == 0.0 && net.ub[indx] == 0.0)
 
+import Base.isopen
 export isopen
 isopen(net::MetNet, ider) = !isblocked(net::MetNet, ider)
 
