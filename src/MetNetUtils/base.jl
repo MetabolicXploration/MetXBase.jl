@@ -14,7 +14,14 @@ import Base.isequal
 isequal(net1::MetNet, net2::MetNet) = (net1 == net2)
 
 import Base.hash
-hash(m::MetNet, h::Int = 0) = hash((:MetNet, m.S, m.b, m.lb, m.ub, h))
+function hash(m::MetNet, h::Int = 0) 
+    h += hash(:MetNet)
+    h = hash(m.S, h)
+    h = hash(m.b, h)
+    h = hash(m.lb, h)
+    h = hash(m.ub, h)
+    return h
+end
 
 import Base.show
 show(io::IO, m::MetNet) = (println(io, "MetNet"); summary(io, m))

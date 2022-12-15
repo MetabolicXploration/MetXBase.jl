@@ -46,6 +46,7 @@ module MetXBase
     include("MetNetUtils/echelonize.jl")
     include("MetNetUtils/empty_stuf.jl")
     include("MetNetUtils/fixxed_reduction.jl")
+    include("MetNetUtils/fixxing.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")
@@ -59,6 +60,7 @@ module MetXBase
     #! include EchelonMetNetUtils
     include("EchelonMetNetUtils/base.jl")
     include("EchelonMetNetUtils/net_interface.jl")
+    include("EchelonMetNetUtils/span.jl")
     include("EchelonMetNetUtils/summary.jl")
 
     #! include IO

@@ -30,13 +30,8 @@ struct MetNet{MT, VT} <: AbstractMetNet
             metFormulas, rxnNames, subSystems, 
             extras
         ) 
-            # TODO: this is probably a hack (fix it)
             MT = typeof(S)
-            VT = Nothing
-            for v in [b, c, lb, ub] # find the non-Nonthing type
-                VT = typeof(v)
-                VT !== Nothing && break
-            end
+            VT = something(b, c, lb, ub, Some(nothing)) |> typeof
 
             # TODO: do some consistency checking here (types, dims, ect...)
 

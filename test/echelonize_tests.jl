@@ -26,7 +26,6 @@ let
     @show size(G)
     @test Nf + Nd == N
     @test all(sort(idxmap) .== collect(1:N))
-    # TODO: check if G needs to be full ranked
     # @test rank(G) == Nf
     @test length(be) == rank(S)
     @test isempty(intersect(idxf, idxd))

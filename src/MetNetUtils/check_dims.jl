@@ -1,6 +1,6 @@
 # TODO: make an automatic dim relation check system (Not only for MetNets but other structs)
 
-# Check is all fields dims are consistent
+# Check if all fields dims are consistent
 function check_dims(net)
     
     M, N = size(net)

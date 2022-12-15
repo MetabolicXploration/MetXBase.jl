@@ -7,8 +7,8 @@ function reindex(net::MetNet;
 
     # TODO: find where rxnGeneMat goes
     
-    rxn_idxs = rxnindex(net, rxn_idxs)
     met_idxs = metindex(net, met_idxs)
+    rxn_idxs = rxnindex(net, rxn_idxs)
     genes_idxs = geneindex(net, genes_idxs)
 
     netd = Dict()
@@ -29,6 +29,8 @@ function reindex(net::MetNet;
     netd[:genes] = _getindex_or_nothing(net.genes, genes_idxs)
 
     netd[:S] = _getindex_or_nothing(net.S, met_idxs, rxn_idxs)
-
-    return MetNet(; netd...)
+    
+    netd[:extras] = net.extras
+    
+    return  MetNet(; netd...)
 end

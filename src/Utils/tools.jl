@@ -1,5 +1,6 @@
-_dense(S::AbstractMatrix) = (S isa DenseMatrix) ? S : Matrix(S)
-_dense(v::AbstractVector) = (v isa DenseVector) ? v : Vector(v) 
+_dense(v::AbstractSparseMatrix) = Matrix(v)
+_dense(v::AbstractSparseVector) = Vector(v)
+_dense(v::AbstractArray) = v
 
 # TODO: make a dense/sparse api
 dense_vecs(net::MetNet) = MetNet(net; 
