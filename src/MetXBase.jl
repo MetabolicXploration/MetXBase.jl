@@ -37,6 +37,7 @@ module MetXBase
     include("Utils/printing.jl")
     include("Utils/tools.jl")
     include("Utils/toy_model.jl")
+    include("Utils/trunc_sample.jl")
     
     #! include MetNetUtils
     include("MetNetUtils/balance_str.jl")

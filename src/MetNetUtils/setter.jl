@@ -1,5 +1,5 @@
 export stoi!
-stoi!(net::MetNet, metider, rxnider, s) =  
+stoi!(net::MetNet, metider, rxnider, val) =  
     (_setindex!(net.S, metindex(net, metider), rxnindex(net, rxnider), val); net)
 
 export balance!
