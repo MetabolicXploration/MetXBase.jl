@@ -31,3 +31,21 @@ _empty!(::Nothing) = nothing
 _empty!(o) = empty!(o)
 empty!(m::MetNet, fields = fieldnames(typeof(m))) =
     foreach((f) -> _empty!(getfield(m, f)), fields)
+
+import Base.big
+function Base.big(net::MetNet)
+
+    bigS = collect(BigFloat, net.S)
+    bigb = collect(BigFloat, net.b)
+    bigc = collect(BigFloat, net.c)
+    biglb = collect(BigFloat, net.lb)
+    bigub = collect(BigFloat, net.ub)
+
+    return MetNet(
+        bigS, bigb, bigc, biglb, bigub, 
+        _copy(net.mets), _copy(net.rxns), _copy(net.genes), _copy(net.rxnGeneMat), 
+        _copy(net.grRules), _copy(net.metNames),
+        _copy(net.metFormulas), _copy(net.rxnNames), _copy(net.subSystems),
+        _copy(net.extras)
+    )
+end

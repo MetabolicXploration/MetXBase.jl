@@ -31,6 +31,7 @@ module MetXBase
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
+    include("Utils/linear_fit.jl")
     include("Utils/mgrscho.jl")
     include("Utils/nearPD.jl")
     include("Utils/net_interface.jl")

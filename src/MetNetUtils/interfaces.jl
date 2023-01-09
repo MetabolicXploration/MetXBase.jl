@@ -71,14 +71,14 @@ rxn_prods(net::MetNet, ider) = findall(stoi(net, :,rxnindex(net, ider)) .> 0.0)
 export met_rxns
 met_rxns(net::MetNet, ider) = findall(stoi(net, metindex(net, ider), :) .!= 0.0)
 
-export lin_objective, lin_objective!
-lin_objective(net::MetNet) = net.c
-lin_objective(net::MetNet, ider) = net.c[rxnindex(net, ider)]
-function lin_objective!(net::MetNet, ider, val) 
+export linear_coefficients, linear_coefficients!
+linear_coefficients(net::MetNet) = net.c
+linear_coefficients(net::MetNet, ider) = net.c[rxnindex(net, ider)]
+function linear_coefficients!(net::MetNet, ider, val) 
     _setindex!(net.c, zero(eltype(net.c)))
     idxs = rxnindex(net, ider)
     _setindex!(net.c, idxs, val)
     return net.c
 end
-lin_objective!(net::MetNet, val) = lin_objective!(net, Colon(), val) 
+linear_coefficients!(net::MetNet, val) = linear_coefficients!(net, Colon(), val) 
 

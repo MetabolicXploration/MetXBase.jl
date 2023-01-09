@@ -85,3 +85,6 @@ _getindex_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is..
 
 _get(::Nothing, idx, dflt) = dflt
 _get(col, idx, dflt) = get(col, idx, dflt)
+
+_copy(x) = copy(x)
+_copy(::Nothing) = nothing
