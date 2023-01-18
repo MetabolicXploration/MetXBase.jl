@@ -8,6 +8,7 @@ module MetXBase
     using ProgressMeter
     using Statistics
     using LinearAlgebra
+    using StringRepFilter
     
     import COBREXA
     import Printf: @sprintf
@@ -25,6 +26,7 @@ module MetXBase
     
     #! include Utils
     include("Utils/IterChunks.jl")
+    include("Utils/TagDBs.jl")
     include("Utils/callback_utils.jl")
     include("Utils/echelonize.jl")
     include("Utils/echelonize2.jl")
