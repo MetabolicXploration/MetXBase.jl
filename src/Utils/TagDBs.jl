@@ -14,13 +14,15 @@ function TagDB(dat::Vector{<:Dict})
 end
 
 # ------------------------------------------------------------------
+import Base.show
+show(io::IO, db::TagDB) = println(io, "TagDB with ", length(db.dat), " objects")
+
+# ------------------------------------------------------------------
 function _tags_product(tags...)
     tags = collect(Any, tags)
-    # @show tags
     
     # handle types
     for (i, t) in enumerate(tags)
-        # @show t
         # Char -> Vector{String}
         (t isa AbstractChar) && (tags[i] = [string(t)]; continue)
         # String -> Vector{String}
