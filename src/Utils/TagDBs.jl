@@ -47,6 +47,8 @@ end
 
 # To make isequal('A', "A") = true, this allows to use 'A':'B'
 _isequal(x, y) = isequal(x, y)
+_isequal(x::Integer, y::AbstractFloat) = false
+_isequal(x::AbstractFloat, y::Integer) = false
 _isequal(x::AbstractChar, y::AbstractString) = isequal(string(x), y)
 _isequal(x::AbstractString, y::AbstractChar) = isequal(string(y), x)
 _isequal(x) = Base.Fix2(_isequal, x)
@@ -72,15 +74,20 @@ end
 export doquery
 function doquery(f::Function, db::TagDB, key, qs...)
 
-    qs = _tags_product(qs...)
-    for q in qs
+    # The iteration order ensure the control from the query
+    # of the searching sequence
+    # Eg: doquery(f, db, "A", 1:3) will search the query ("A", (,1)) first
+    for qs in _tags_product(qs...)
+        found = false
         for obj in db.dat
             haskey(obj, "key") || continue
             isequal(key, obj["key"]) || continue
             haskey(obj, "tags") || continue
-            _tags_match(obj["tags"], q) || continue
+            _tags_match(obj["tags"], qs) || continue
             f(obj) === true && return nothing
+            found = true
         end
+        found || error("Obj not found, qs: ", qs)
     end
 
     return nothing
@@ -88,12 +95,8 @@ end
 
 # ------------------------------------------------------------------
 export query
-function query(db::TagDB, key, qs...; 
-        extract = identity
-    )
 
-    # extract
-    extract = extract isa String ? keyval(extract) : extract
+function _query(db::TagDB, extract::Function, key, qs...)
     
     founds = []
     doquery(db, key, qs...) do obj
@@ -102,18 +105,16 @@ function query(db::TagDB, key, qs...;
 
     return founds
 end
+_query(db::TagDB, extract::String, key, qs...) = _query(db, keyval(extract), key, qs...)
+
+query(db::TagDB, key, qs...; extract = identity) = _query(db, extract, key, qs...)
 query(T::DataType, db::TagDB, key, qs...; kwargs...) = 
     convert(Vector{T}, query(db, key, qs...; kwargs...))
 
 # ------------------------------------------------------------------
 # ------------------------------------------------------------------
 export queryfirst
-function queryfirst(db::TagDB, key, qs...; 
-        extract = identity
-    )
-
-    # extract
-    extract = extract isa String ? keyval(extract) : extract
+function _queryfirst(db::TagDB, extract::Function, key, qs...)
     
     found = nothing
     doquery(db, key, qs...) do obj
@@ -123,6 +124,11 @@ function queryfirst(db::TagDB, key, qs...;
 
     return found
 end
+_queryfirst(db::TagDB, extract::String, key, qs...) = 
+    _queryfirst(db, keyval(extract), key, qs...)
+
+queryfirst(db::TagDB, key, qs...; extract = identity) = 
+    _queryfirst(db, extract, key, qs...)
 
 # ------------------------------------------------------------------
 function _format_obj!(obj::Dict)
@@ -134,7 +140,7 @@ function _format_obj!(obj::Dict)
     if haskey(obj, "tags")
         isa(obj["tags"], Vector) || 
             error("unsupported 'tags' type, got '$(typeof(obj["tags"]))', expected 'Vector'. obj: $(obj)")
-        else; obj["tags"] = []
+        else; obj["tags"] = Any[]
     end
 end
 
@@ -167,10 +173,10 @@ function Base.push!(db::TagDB, key::String, tags::Vector;
 end
 
 push!(db::TagDB, key::String, tag, tags...; kwargs...) = 
-    push!(db, key, [tag; tags...]; kwargs...)
+    push!(db, key, Any[tag; tags...]; kwargs...)
 
 push!(db::TagDB, key::String; kwargs...) = 
-    push!(db, key, []; kwargs...)
+    push!(db, key, Any[]; kwargs...)
 
 function push!(db::TagDB, p::Pair{String, <:Dict}) 
     obj = Dict(last(p))
