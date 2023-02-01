@@ -45,12 +45,12 @@ module MetXBase
     #! include MetNetUtils
     include("MetNetUtils/balance_str.jl")
     include("MetNetUtils/base.jl")
+    include("MetNetUtils/boundutils.jl")
     include("MetNetUtils/check_dims.jl")
     include("MetNetUtils/convert.jl")
     include("MetNetUtils/echelonize.jl")
     include("MetNetUtils/empty_stuf.jl")
     include("MetNetUtils/fixxed_reduction.jl")
-    include("MetNetUtils/fixxing.jl")
     include("MetNetUtils/getter.jl")
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")

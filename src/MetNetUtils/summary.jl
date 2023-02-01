@@ -157,10 +157,12 @@ function _print_stoi_summary(io::IO, net::MetNet)
     s0 = Inf
     s1 = -Inf
     for s in net.S
+        s = abs(s)
         iszero(s) && continue
-        abs(s) < s0 && (s0 = s)
-        abs(s) > s1 && (s1 = s)
+        s < s0 && (s0 = s)
+        s > s1 && (s1 = s)
     end
+    s0, s1 = log10(s0), log10(s1)
 
     printstyled(io, 
         string("S order: ", (s0, s1)), 

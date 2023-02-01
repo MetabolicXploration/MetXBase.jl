@@ -15,6 +15,7 @@ Random.seed!(1234)
     include("IterChunks_tests.jl")
     include("echelonize_tests.jl")
     include("grad_desc_tests.jl")
+    include("TagDB_tests.jl")
     
     # MetNet
     include("getters_tests.jl")

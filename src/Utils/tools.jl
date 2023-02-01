@@ -88,3 +88,33 @@ _get(col, idx, dflt) = get(col, idx, dflt)
 
 _copy(x) = copy(x)
 _copy(::Nothing) = nothing
+
+function _find_nearest(x::Float64, x0::Float64, dx::Float64)
+    i, d = divrem(x - x0, dx)
+    return d < (dx / 2) ? Int(i)+1 : Int(i)+2
+end
+
+function _find_nearest(x::Float64, r::AbstractRange)
+    x0, x1 = extrema(r)
+    x0 > x && return firstindex(r)
+    x1 < x && return lastindex(r)
+    return _find_nearest(x, x0, step(r))
+end
+
+function _histogram(dat::AbstractVector, nbins)
+    v0, v1 = extrema(dat)
+    bins = range(v0, v1; length = nbins)
+    hist = zeros(nbins)
+    for vi in dat
+        idx = _find_nearest(vi, bins)
+        hist[idx] += 1.0
+    end
+    return (bins, hist)
+end
+
+function _isapprox(x0, xs...; kwargs...)
+    for x in xs
+        isapprox(x0, x; kwargs...) || return false
+    end
+    return true
+end

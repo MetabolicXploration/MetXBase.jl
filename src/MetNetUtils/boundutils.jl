@@ -18,3 +18,13 @@ function fixxing(f::Function, net::MetNet, ider, val; dv = 0.0)
 
     return ret
 end
+
+export clamplb!
+clamplb!(net::MetNet, b0, b1) = (net.lb .= clamp.(net.lb, b0, b1); net)
+
+export clampub!
+clampub!(net::MetNet, b0, b1) = (net.ub .= clamp.(net.ub, b0, b1); net)
+
+export clampbounds!
+clampbounds!(net::MetNet, b0, b1) = 
+    (clamplb!(net, b0, b1); clampub!(net, b0, b1); net)
