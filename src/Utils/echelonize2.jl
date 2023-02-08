@@ -5,7 +5,7 @@ function basis_rxns(S::DenseMatrix, b::DenseVector;
     )
 
     Ab = hcat(S, b)
-    _, idxd = _rref(Ab; tol)
+    _, idxd = _rref!(Ab; tol)
     return idxd
 end
 
@@ -19,7 +19,7 @@ function echelonize(X::DenseMatrix, v::DenseVector; tol::Real = 1e-10)
     M, N = size(X)
     @assert M <= N
     Ab = hcat(X, v)
-    A, idxd = _rref(Ab; tol)
+    A, idxd = _rref!(Ab; tol)
     Nd = length(idxd)
     A = view(A, 1:Nd, :)
     idxf = setdiff(1:N, idxd)
@@ -46,8 +46,12 @@ function basis_mat(G::Matrix, idxf::Vector, idxd::Vector)
     return basis
 end
 
+# TODO: Implement pivoting. Right now we can not control the set of independent 
+# colums which is selected. It can even be the last column, 
+# which in a net extended matrix (Sb) is not a flux column.
+
 # Derived from https://github.com/blegat/RowEchelon.jl
-function _rref(A::DenseArray; tol::Float64=1e-10)
+function _rref!(A::DenseArray; tol::Float64=1e-10)
 
     T = eltype(A)
     nr, nc = size(A)

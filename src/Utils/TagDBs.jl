@@ -156,8 +156,8 @@ function _queryfirst(db::TagDB, errflag::Bool, extract::Function, q, qs...)
 
     return found
 end
-_queryfirst(db::TagDB, extract::String, q, qs...) = 
-    _queryfirst(db, keyval(extract), q, qs...)
+_queryfirst(db::TagDB, errflag::Bool, extract::String, q, qs...) = 
+    _queryfirst(db, errflag, keyval(extract), q, qs...)
 
 export queryfirst
 function queryfirst(db::TagDB, q, qs...; 

@@ -12,13 +12,9 @@ export span
 span(enet::EchelonMetNet, vf::Vector) = span!(zeros(size(enet, 2)), enet, vf)
 
 export isfeasible_vf!
-function isfeasible_vf!(v::Vector, enet::EchelonMetNet, vf::Vector;
-        testfree = true
+function isfeasible_vf!(v::Vector, lb::Vector, ub::Vector;
+       testfree = true
     )
-    span!(v, enet, vf)
-    
-    lb = enet.net.lb
-    ub = enet.net.ub
 
     # Test dependent
     for i in enet.idxd
@@ -34,6 +30,15 @@ function isfeasible_vf!(v::Vector, enet::EchelonMetNet, vf::Vector;
     end
 
     return true
+end
+
+function isfeasible_vf!(v::Vector, enet::EchelonMetNet, vf::Vector;
+        testfree = true
+    )
+    span!(v, enet, vf)
+    lb = enet.net.lb
+    ub = enet.net.ub
+    return isfeasible_vf!(v, lb, ub; testfree)
 end
 
 export isfeasible_vf

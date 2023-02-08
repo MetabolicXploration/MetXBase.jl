@@ -2,7 +2,7 @@
 export EchelonMetNet
 struct EchelonMetNet{MT, VT} <: AbstractMetNet
 
-    net::MetNet{MT, VT}   # The new ech network
+    net::MetNet{MT, VT} # The new ech network
     
     # echelonize
     G::Matrix{Float64} # TODO: Use types
