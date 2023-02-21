@@ -83,6 +83,17 @@ _setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)
 
 _getindex_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is...]
 
+function _resize_or_nothing(v0::AbstractArray, fillv, d1, ds...)
+    v1 = fill(fillv, d1, ds...)
+    N = min(length(v0), length(v1))
+    for i in 1:N; v1[i] = v0[i]; end
+    return v1
+end
+_resize_or_nothing(v0::Nothing, fillv, d1, ds...) = v0
+
+_length_or_nothing(v0) = length(v0)
+_length_or_nothing(::Nothing) = nothing
+
 _get(::Nothing, idx, dflt) = dflt
 _get(col, idx, dflt) = get(col, idx, dflt)
 

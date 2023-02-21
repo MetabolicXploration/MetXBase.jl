@@ -155,7 +155,7 @@ function _print_stoi_summary(io::IO, net::MetNet)
     
     # nz entreme
     s0 = Inf
-    s1 = -Inf
+    s1 = 0.0
     for s in net.S
         s = abs(s)
         iszero(s) && continue

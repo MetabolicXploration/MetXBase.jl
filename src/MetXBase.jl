@@ -1,5 +1,9 @@
 # TODO: Use DocStringExtensions.jl (see BIGGReactions.jl as example)
 
+# TODO: setup Quek2014-Recon2 network 
+# Este es el paper: Quek2014 - Metabolic flux analysis of HEK cell culture using Recon 2 (reduced version of Recon 2)
+# Download link: https://www.ebi.ac.uk/biomodels/MODEL1504080000
+
 module MetXBase
 
     using SparseArrays
@@ -13,10 +17,6 @@ module MetXBase
     import COBREXA
     import Printf: @sprintf
 
-    
-    export MetNet
-
-
     #! include .
 
     #! include Types
@@ -28,8 +28,10 @@ module MetXBase
     include("Utils/IterChunks.jl")
     include("Utils/TagDBs.jl")
     include("Utils/callback_utils.jl")
+    include("Utils/connectome.jl")
     include("Utils/echelonize.jl")
     include("Utils/echelonize2.jl")
+    include("Utils/exportall.jl")
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
@@ -55,11 +57,11 @@ module MetXBase
     include("MetNetUtils/interfaces.jl")
     include("MetNetUtils/queries.jl")
     include("MetNetUtils/reindex.jl")
+    include("MetNetUtils/resize.jl")
     include("MetNetUtils/rxn_str.jl")
     include("MetNetUtils/search.jl")
     include("MetNetUtils/setter.jl")
     include("MetNetUtils/summary.jl")
-    
     
     #! include EchelonMetNetUtils
     include("EchelonMetNetUtils/base.jl")
@@ -70,5 +72,7 @@ module MetXBase
     #! include IO
     include("IO/load_net.jl")
     
+    @_exportall_underscore
+    @_exportall_uppercase
 
 end
