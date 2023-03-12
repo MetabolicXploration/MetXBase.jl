@@ -1,5 +1,4 @@
 [deps]
 MetXBase = "0b8c4419-604a-4c8e-9eed-0f79de4a140e"
-MetXNetHub = "be9415a8-24b2-49ae-ba75-41eeaa9f722f"
 RunTestsEnv = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"

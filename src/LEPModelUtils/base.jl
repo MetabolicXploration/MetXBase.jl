@@ -1,0 +1,1 @@
+Base.size(lep::LEPModel) = size(lep.S)

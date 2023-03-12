@@ -2,7 +2,7 @@ let
 
     println()
     println("="^60)
-    println("ITER CHINKS STUFF")
+    println("ITER CHUNKS STUFF")
     println("."^60)
     println()
 

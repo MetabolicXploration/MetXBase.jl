@@ -2,14 +2,6 @@ _dense(v::AbstractSparseMatrix) = Matrix(v)
 _dense(v::AbstractSparseVector) = Vector(v)
 _dense(v::AbstractArray) = v
 
-# TODO: make a dense/sparse api
-dense_vecs(net::MetNet) = MetNet(net; 
-    lb = _dense(net.lb),
-    ub = _dense(net.ub),
-    c = _dense(net.c),
-    b = _dense(net.b),
-)
-
 export extract_fields
 function extract_fields(obj, fields = fieldnames(typeof(obj)))
     sdict = Dict{Symbol, Any}()

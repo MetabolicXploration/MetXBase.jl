@@ -7,28 +7,24 @@
 module MetXBase
 
     using SparseArrays
-    using Serialization
     using UnicodePlots
     using ProgressMeter
     using Statistics
     using LinearAlgebra
     using StringRepFilter
     
-    import COBREXA
     import Printf: @sprintf
 
     #! include .
 
     #! include Types
-    include("Types/0_AbstractMetNets.jl")
-    include("Types/1_MetNets.jl")
-    include("Types/2_EchelonMetNet.jl")
+    include("Types/0_AbstractLEPModels.jl")
+    include("Types/1_LEPModels.jl")
     
     #! include Utils
     include("Utils/IterChunks.jl")
     include("Utils/TagDBs.jl")
     include("Utils/callback_utils.jl")
-    include("Utils/connectome.jl")
     include("Utils/echelonize.jl")
     include("Utils/echelonize2.jl")
     include("Utils/exportall.jl")
@@ -38,39 +34,17 @@ module MetXBase
     include("Utils/linear_fit.jl")
     include("Utils/mgrscho.jl")
     include("Utils/nearPD.jl")
-    include("Utils/net_interface.jl")
     include("Utils/printing.jl")
     include("Utils/tools.jl")
-    include("Utils/toy_model.jl")
     include("Utils/trunc_sample.jl")
-    
-    #! include MetNetUtils
-    include("MetNetUtils/balance_str.jl")
-    include("MetNetUtils/base.jl")
-    include("MetNetUtils/boundutils.jl")
-    include("MetNetUtils/check_dims.jl")
-    include("MetNetUtils/convert.jl")
-    include("MetNetUtils/echelonize.jl")
-    include("MetNetUtils/empty_stuf.jl")
-    include("MetNetUtils/fixxed_reduction.jl")
-    include("MetNetUtils/getter.jl")
-    include("MetNetUtils/interfaces.jl")
-    include("MetNetUtils/queries.jl")
-    include("MetNetUtils/reindex.jl")
-    include("MetNetUtils/resize.jl")
-    include("MetNetUtils/rxn_str.jl")
-    include("MetNetUtils/search.jl")
-    include("MetNetUtils/setter.jl")
-    include("MetNetUtils/summary.jl")
-    
-    #! include EchelonMetNetUtils
-    include("EchelonMetNetUtils/base.jl")
-    include("EchelonMetNetUtils/net_interface.jl")
-    include("EchelonMetNetUtils/span.jl")
-    include("EchelonMetNetUtils/summary.jl")
 
-    #! include IO
-    include("IO/load_net.jl")
+    #! include LEPModelUtils
+    include("LEPModelUtils/base.jl")
+    include("LEPModelUtils/ider_interface.jl")
+    include("LEPModelUtils/rand_lep.jl")
+    
+    #! include AbstractLEPModelUtils
+    include("AbstractLEPModelUtils/ider_interface.jl")
     
     @_exportall_underscore
     @_exportall_uppercase
