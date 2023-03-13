@@ -75,6 +75,9 @@ _setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)
 
 _getindex_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is...]
 
+_collect_or_nothing(T, v) = isnothing(v) ? v : collect(T, v)
+_collect_or_nothing(v) = isnothing(v) ? v : collect(eltype(v), v)
+
 function _resize_or_nothing(v0::AbstractArray, fillv, d1, ds...)
     v1 = fill(fillv, d1, ds...)
     N = min(length(v0), length(v1))

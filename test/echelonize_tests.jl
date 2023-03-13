@@ -1,18 +1,16 @@
 let
 
-    Random.seed!(10)
-
     println()
     println("="^60)
     println("ECHELONIZE")
     println("."^60)
     println()
 
-    net0 = _rand_lep(5, 10)
-    S = net0.S
-    b = net0.b
+    lep0 = _rand_lep(5, 10)
+    S = lep0.S
+    b = lep0.b
     M, N = size(S)
-    @show size(net0)
+    @show size(lep0)
 
     # basis_rxns
     @time idxd = basis_rxns(S, b; tol = 1e-10)

@@ -12,6 +12,7 @@ Random.seed!(1234)
 
     # Utils
     include("IterChunks_tests.jl")
+    include("manipulation_tests.jl")
     include("echelonize_tests.jl")
     include("grad_desc_tests.jl")
     include("TagDB_tests.jl")

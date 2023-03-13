@@ -123,9 +123,6 @@ end
 ## ------------------------------------------------------------------
 # Interfaces Register
 
-# metnet
-@reg_extras_val_interface metnet
-
 # config
 @reg_extras_dict_interface config
 

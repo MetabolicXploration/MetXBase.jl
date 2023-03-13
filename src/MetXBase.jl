@@ -40,11 +40,16 @@ module MetXBase
 
     #! include LEPModelUtils
     include("LEPModelUtils/base.jl")
-    include("LEPModelUtils/ider_interface.jl")
+    include("LEPModelUtils/empty_fixxed.jl")
+    include("LEPModelUtils/empty_interface.jl")
+    include("LEPModelUtils/lep_interface.jl")
     include("LEPModelUtils/rand_lep.jl")
+    include("LEPModelUtils/reindex.jl")
+    include("LEPModelUtils/resize.jl")
     
     #! include AbstractLEPModelUtils
     include("AbstractLEPModelUtils/ider_interface.jl")
+    include("AbstractLEPModelUtils/lep_interface.jl")
     
     @_exportall_underscore
     @_exportall_uppercase
