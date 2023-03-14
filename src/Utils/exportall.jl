@@ -1,5 +1,5 @@
 function _exportall(filter::Function, mod::Module)
-    for sym in names(mod; all = true)
+    for sym in names(mod; all = true, imported = true)
         filter(sym) == true || continue
         @eval mod export $(sym)
     end

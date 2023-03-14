@@ -20,6 +20,7 @@ module MetXBase
     using StringRepFilter
     
     import Printf: @sprintf
+    import SpecialFunctions: erf
 
     #! include .
 
