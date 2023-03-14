@@ -23,7 +23,7 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
         MT = matrix_type(lep)
         VT = vector_type(lep)
 
-        lep1 = LEPModel(;
+        lep1 = LEPModel(lep;
             S = convert(MT, IG),
             b = convert(VT, be),
             rowids = String["M$i" for i in 1:Nd] # rows lost initial meaning

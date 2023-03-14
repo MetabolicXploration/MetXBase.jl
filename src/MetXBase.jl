@@ -41,6 +41,7 @@ module MetXBase
     include("Utils/mgrscho.jl")
     include("Utils/nearPD.jl")
     include("Utils/printing.jl")
+    include("Utils/search.jl")
     include("Utils/tools.jl")
     include("Utils/trunc_sample.jl")
 
@@ -54,6 +55,7 @@ module MetXBase
     include("LEPModelUtils/resize.jl")
     
     #! include AbstractLEPModelUtils
+    include("AbstractLEPModelUtils/base.jl")
     include("AbstractLEPModelUtils/extras_interface.jl")
     include("AbstractLEPModelUtils/ider_interface.jl")
     include("AbstractLEPModelUtils/lep_interface.jl")
