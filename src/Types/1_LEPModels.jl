@@ -14,29 +14,31 @@
 # Bayesian inference. We will encode within the posterior probability of the unknowns all the available information about 
 # the system along with the hard constraints that variables $v$ must satisfy.
 
-struct LEPModel{MT, VT} <: AbstractLEPModel
+Base.@kwdef struct LEPModel{MT, VT} <: AbstractLEPModel
     
     # LEP data 
     # contraints
     # S ν = b 
     # ν ∈ [lb, ub]
-    S::Union{Nothing, MT}
-    b::Union{Nothing, VT}
-    lb::Union{Nothing, VT}
-    ub::Union{Nothing, VT}
+    S::Union{Nothing, MT} = nothing
+    b::Union{Nothing, VT} = nothing
+    lb::Union{Nothing, VT} = nothing
+    ub::Union{Nothing, VT} = nothing
 
     # optimizations coes
     # optarg_ν c'ν
-    c::Union{Nothing, VT}
+    c::Union{Nothing, VT} = nothing
     # optarg_ν ν'Cν
-    C::Union{Nothing, MT}
+    C::Union{Nothing, MT} = nothing
     
     # Meta
-    rowids::Union{Nothing, Array{String,1}} # an id for the rows of S
-    colids::Union{Nothing, Array{String,1}} # an id for the columns of S
+    # an id for the rows of S
+    rowids::Union{Nothing, Array{String,1}} = nothing
+    # an id for the columns of S 
+    colids::Union{Nothing, Array{String,1}} = nothing
 
-    # Extras
-    extras::Dict{Any, Any} # to store temp data
+    # Extras (to store temp data)
+    extras::Dict{Any, Any} = Dict{Any, Any}()
 
     function LEPModel(
             S, b, lb, ub, c, C, rowids, colids, 
@@ -50,16 +52,6 @@ struct LEPModel{MT, VT} <: AbstractLEPModel
             )
     end 
 
-end
-
-# Empty type
-function LEPModel(;
-        S = nothing, b = nothing, lb = nothing, ub = nothing,
-        c = nothing, C = nothing,
-        rowids = nothing, colids = nothing,
-        extras = Dict{Any, Any}()
-    ) 
-    return LEPModel(S, b, lb, ub, c, C, rowids, colids, extras)
 end
 
 """

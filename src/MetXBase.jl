@@ -16,6 +16,7 @@ module MetXBase
     using ProgressMeter
     using Statistics
     using LinearAlgebra
+    using LinearAlgebra: inv!
     using StringRepFilter
     
     import Printf: @sprintf
@@ -31,12 +32,14 @@ module MetXBase
     include("Utils/IterChunks.jl")
     include("Utils/TagDBs.jl")
     include("Utils/callback_utils.jl")
+    include("Utils/distributions.jl")
     include("Utils/echelonize.jl")
     include("Utils/echelonize2.jl")
     include("Utils/exportall.jl")
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
+    include("Utils/inplaceinverse.jl")
     include("Utils/linear_fit.jl")
     include("Utils/mgrscho.jl")
     include("Utils/nearPD.jl")
@@ -67,6 +70,6 @@ module MetXBase
     include("EchelonLEPModelUtils/summary.jl")
     
     @_exportall_underscore()
-    @_exportall_words()
+    @_exportall_non_underscore()
 
 end
