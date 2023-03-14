@@ -5,7 +5,7 @@
 # TODO: create a cache_rebuild needed interface/recommendation
 
 export extras
-extras(obj) = error("Method extras(obj::$(obj))::Dict not defined")
+extras(obj) = error("Method extras(obj::$(typeof(obj)))::Dict not defined")
 extras(obj, k) = getindex(extras(obj), k)
 extras(obj, k, dflt) = get(extras(obj), k, dflt)
 

@@ -4,6 +4,11 @@
 # Este es el paper: Quek2014 - Metabolic flux analysis of HEK cell culture using Recon 2 (reduced version of Recon 2)
 # Download link: https://www.ebi.ac.uk/biomodels/MODEL1504080000
 
+# TODO: MetNet will be only for operation with the non LEPModel fields
+# That is, right now, for nothing else than io and discovery tooling (search, summary, etc)
+# MetXOptim must no depends on MetXGEMs even if the test env has it for MetXNetHub stuf
+# A similar pattern for MetXEP MetXGrids MetXMC
+
 module MetXBase
 
     using SparseArrays
@@ -20,6 +25,7 @@ module MetXBase
     #! include Types
     include("Types/0_AbstractLEPModels.jl")
     include("Types/1_LEPModels.jl")
+    include("Types/2_EchelonLEPModel.jl")
     
     #! include Utils
     include("Utils/IterChunks.jl")
@@ -48,10 +54,17 @@ module MetXBase
     include("LEPModelUtils/resize.jl")
     
     #! include AbstractLEPModelUtils
+    include("AbstractLEPModelUtils/extras_interface.jl")
     include("AbstractLEPModelUtils/ider_interface.jl")
     include("AbstractLEPModelUtils/lep_interface.jl")
     
-    @_exportall_underscore
-    @_exportall_uppercase
+    #! include EchelonLEPModelUtils
+    include("EchelonLEPModelUtils/base.jl")
+    include("EchelonLEPModelUtils/lep_interface.jl")
+    include("EchelonLEPModelUtils/span.jl")
+    include("EchelonLEPModelUtils/summary.jl")
+    
+    @_exportall_underscore()
+    @_exportall_words()
 
 end

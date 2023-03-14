@@ -1,26 +1,22 @@
 # Fundamentals
 
-export rowids
 rowids(lep::LEPModel) = lep.rowids
+rowids(lep::LEPModel, ider) = lep.rowids[rowindex(lep, ider)]
 
-export colids
 colids(lep::LEPModel) = lep.colids
+colids(lep::LEPModel, ider) = lep.colids[colindex(lep, ider)]
 
 ## -------------------------------------------------------------------
 # LEP Getters
-export cost_matrix
 cost_matrix(lep) = lep.S
 cost_matrix(lep, rider, cider) = lep.S[rowindex(lep, rider), colindex(lep, cider)]
 
-export colrange
 colrange(lep) = (ub(lep) .- lb(lep))
 colrange(lep, ider) = (idx = colindex(lep, ider); ub(lep, idx) .- lb(lep, idx))
 
-export ub
 ub(lep) = lep.ub
 ub(lep, ider) = lep.ub[colindex(lep, ider)]
 
-export lb
 lb(lep) = lep.lb
 lb(lep, ider) = lep.lb[colindex(lep, ider)]
 
@@ -28,39 +24,33 @@ export balance
 balance(lep) = lep.b
 balance(lep, ider) = lep.b[rowindex(lep, ider)]
 
-export bounds
 bounds(lep, ider) = (idx = colindex(lep, ider); (lb(lep, idx), ub(lep, idx)))
 
-# TODO: rename
-export linear_coefficients, linear_coefficients!
+# TODO: rename to reflect that it is for optimizations
 linear_coefficients(lep) = lep.c
 linear_coefficients(lep, ider) = lep.c[colindex(lep, ider)]
 
-# TODO: add access to lep.C
+quad_coefficients(lep) = lep.C
+quad_coefficients(lep, rider, cider) = lep.C[rowindex(lep, rider), colindex(lep, cider)]
 
 ## -------------------------------------------------------------------
 # LEP Setters
-export cost_matrix!
 cost_matrix!(lep, rider, cider, val) =  
     (_setindex!(lep.S, rowindex(lep, rider), colindex(lep, cider), val); lep)
 
-export balance!
 balance!(lep, rider, val) = 
     (_setindex!(lep.b, rowindex(lep, rider), val); lep)
 
-export ub!
 ub!(lep, cider, val) = 
     (_setindex!(lep.ub, colindex(lep, cider), val); lep)
 ub!(lep, val) = 
     (_setindex!(lep.ub, Colon(), val); lep)
 
-export lb!
 lb!(lep, cider, val) = 
     (_setindex!(lep.lb, colindex(lep, cider), val); lep)
 lb!(lep, val) = 
     (_setindex!(lep.lb, Colon(), val); lep)
 
-export bounds!
 function bounds!(lep, ider, lb, ub)
     idx = colindex(lep, ider)
     ub!(lep, idx, ub)
@@ -78,7 +68,7 @@ function bounds!(lep, ider;
     return lep
 end
 
-# TODO: rename
+# TODO: rename to reflect that it is for optimizations
 function linear_coefficients!(lep, ider, val) 
     _setindex!(lep.c, zero(eltype(lep.c)))
     idxs = colindex(lep, ider)
@@ -87,11 +77,10 @@ function linear_coefficients!(lep, ider, val)
 end
 linear_coefficients!(lep, val) = linear_coefficients!(lep, Colon(), val) 
 
-# TODO: add setter to lep.C
+quad_coefficients!(lep, rider, cider, val) =  
+    (_setindex!(lep.C, rowindex(lep, rider), colindex(lep, cider), val); lep)
 
 ## -------------------------------------------------------------------
 # Utils
-export matrix_type
 matrix_type(::LEPModel{MT, VT}) where {MT, VT} = MT
-export vector_type
 vector_type(::LEPModel{MT, VT}) where {MT, VT} = VT

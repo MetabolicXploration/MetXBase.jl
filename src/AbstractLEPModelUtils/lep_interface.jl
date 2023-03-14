@@ -6,3 +6,6 @@
 
 # default for all AbstractLEPModel
 lepmodel(lep::AbstractLEPModel) = lep
+
+rowids(obj, ider) = rowids(obj)[rowindex(obj, ider)]
+colids(obj, ider) = colids(obj)[colindex(obj, ider)]
