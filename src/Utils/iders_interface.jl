@@ -7,7 +7,7 @@ function _getindex(model, getter, ider::AbstractString)
     return indx
 end
 _getindex(model, getter, ider::Symbol) = _getindex(model, getter, string(ider))
-_getindex(model, getter, ider::AbstractUnitRange{Int64}) = ider
+_getindex(model, getter, ider::AbstractRange{Int64}) = ider
 _getindex(model, getter, ::Colon) = isnothing(getter(model)) ? Colon() : eachindex(getter(model))
 
 _getindex(model, getter, ider::Vector{<:Integer}) = ider
