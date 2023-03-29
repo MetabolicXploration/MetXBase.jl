@@ -96,7 +96,9 @@ _copy(x) = copy(x)
 _copy(::Nothing) = nothing
 
 function _find_nearest(x::Real, x0::Real, dx::Real)
+    iszero(dx) && return 1
     i, d = divrem(x - x0, dx)
+    # @show i, d
     return d < (dx / 2) ? Int(i)+1 : Int(i)+2
 end
 
@@ -126,6 +128,9 @@ function _histogram(vs::AbstractVector, ws::AbstractVector, nbins)
 end
 _histogram(vs::AbstractVector, w::Number, nbins) =
     _histogram(vs, ones(length(vs)) .* w, nbins)
+
+_histogram(vs::AbstractVector, nbins) =
+    _histogram(vs, ones(length(vs)), nbins)
 
 function _isapprox(x0, xs...; kwargs...)
     for x in xs
