@@ -18,7 +18,7 @@ import Base.isequal
 isequal(lep1::LEPModel, lep2::LEPModel) = (lep1 == lep2)
 
 import Base.hash
-function hash(lep::LEPModel, h::Int = 0) 
+function hash(lep::LEPModel, h::UInt64 = UInt64(0)) 
     h += hash(:LEPModel)
     h = hash(lep.S, h)
     h = hash(lep.b, h)
@@ -26,6 +26,7 @@ function hash(lep::LEPModel, h::Int = 0)
     h = hash(lep.ub, h)
     return h
 end
+hash(lep::LEPModel, h::Integer) = hash(lep, UInt64(h)) 
 
 import Base.show
 show(io::IO, lep::LEPModel) = (println(io, "LEPModel ", size(lep)))

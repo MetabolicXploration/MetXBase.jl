@@ -120,16 +120,22 @@ function _histogram!(bins::AbstractRange, hist::AbstractVector, vs::AbstractVect
     return (bins, hist)
 end
 
-function _histogram(vs::AbstractVector, ws::AbstractVector, nbins)
-    v0, v1 = extrema(vs)
-    bins = range(v0, v1; length = nbins)
-    hist = zeros(nbins)
+function _histogram(bins::AbstractRange, vs::AbstractVector, ws::AbstractVector)
+    hist = zeros(length(bins))
     _histogram!(bins, hist, vs, ws)
 end
-_histogram(vs::AbstractVector, w::Number, nbins) =
+_histogram(bins::AbstractRange, vs::AbstractVector) =
+    _histogram(bins, vs, ones(length(vs)))
+
+function _histogram(vs::AbstractVector, ws::AbstractVector, nbins::Int)
+    v0, v1 = extrema(vs)
+    bins = range(v0, v1; length = nbins)
+    _histogram(bins, vs, ws)
+end
+_histogram(vs::AbstractVector, w::Number, nbins::Int) =
     _histogram(vs, ones(length(vs)) .* w, nbins)
 
-_histogram(vs::AbstractVector, nbins) =
+_histogram(vs::AbstractVector, nbins::Int) =
     _histogram(vs, ones(length(vs)), nbins)
 
 function _isapprox(x0, xs...; kwargs...)
