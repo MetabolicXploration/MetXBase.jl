@@ -109,11 +109,11 @@ function _find_nearest(x::Real, r::AbstractRange)
     return _find_nearest(x, x0, step(r))
 end
 
-function _histogram!(bins::AbstractRange, hist::AbstractVector, vi::Number, wi::Number)
+function _histogram!(bins::AbstractRange, hist::AbstractVector, vi::Number, wi::Number = one(vi))
     nearest = _find_nearest(vi, bins)
     hist[nearest] += wi
 end
-function _histogram!(bins::AbstractRange, hist::AbstractVector, vs::AbstractVector, ws::AbstractVector)
+function _histogram!(bins::AbstractRange, hist::AbstractVector, vs::AbstractVector, ws::AbstractVector = one.(vs))
     for i in eachindex(vs)
         _histogram!(bins, hist, vs[i], ws[i])
     end
@@ -146,3 +146,7 @@ function _isapprox(x0, xs...; kwargs...)
 end
 
 _unbig(x; digits = 15) = round(Float64(x); digits)
+
+
+_checkbounds(vec, I...) = checkbounds(Bool, vec, I...)
+_checkbounds(::Nothing, I...) = false

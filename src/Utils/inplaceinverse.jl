@@ -10,7 +10,7 @@ function inplaceinverse!(dest::AbstractArray, source::AbstractArray; δ = 1e-10)
             nearPD!(dest, δ)
             # @show isposdef(dest)
             inv!(cholesky!(Hermitian(dest)))
-            return 
+            return nothing
         end
         rethrow(err)
     end
