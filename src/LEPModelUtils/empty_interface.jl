@@ -25,7 +25,7 @@ function _empty_col!(lep::LEPModel, col)
 end
 empty_col!(lep::LEPModel, col) = (_empty_col!(lep, col); empty_void_iders!(lep))
 
-# soft del iders with not impact of the network (e.g. rowids without reactions)
+# soft del iders with not impact on the network (e.g. contraints with all coes zero)
 export empty_void_iders!
 function empty_void_iders!(lep::LEPModel; 
         iters = 500 # to be sure

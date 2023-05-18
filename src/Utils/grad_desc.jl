@@ -1,4 +1,5 @@
 # From https://github.com/josePereiro/SimTools.jl
+# TODO: Use StaticArrays
 
 ## ------------------------------------------------------------------------------
 # Add extra interface
@@ -32,7 +33,7 @@ function GDModel(;
         target, 
         maxΔx, minΔx, 
         maxiter = Int(1e4), 
-        smooth = 1.0,
+        smooth = 1.0, 
         it0 = 1, 
         damp = zero(target) .+ one(eltype(target)),
         damp_win = 4,
@@ -75,6 +76,12 @@ function _default_get_step(gdmodel::GDModel{T}) where T<:AbstractArray
     max_step = gdmodel.maxΔx
     correction = ifelse.(gdmodel.ϵi .< gdmodel.smooth, min.(1.0, gdmodel.ϵi), 1.0)
     step = max_step .* correction .* gdmodel.damp
+    # println("="^60)
+    # @show gdmodel.maxΔx
+    # @show max_step
+    # @show correction
+    # @show gdmodel.damp
+    # @show step
     gdmodel.sense .* clamp.(step, gdmodel.minΔx, gdmodel.maxΔx)
 end
 
@@ -128,11 +135,12 @@ function grad_desc_vec!(f::Function, gdmodel::GDModel{T};
         gdmodel.ϵii .= gdmodel.ϵi
 
         # Damp detection
-        if iszero(rem(gdmodel.iter, gdmodel.damp_win))
-            isdamping = iszero.(gdmodel.sense_count) 
-            gdmodel.damp .= ifelse.(isdamping, gdmodel.damp .*= gdmodel.damp_factor, gdmodel.damp)
-            gdmodel.sense_count .= zero(gdmodel.sense_count)
-        end
+        # TODO: reimplement damp detection
+        # if iszero(rem(gdmodel.iter, gdmodel.damp_win))
+        #     isdamping = iszero.(gdmodel.sense_count) 
+        #     gdmodel.damp .= ifelse.(isdamping, gdmodel.damp .*= gdmodel.damp_factor, gdmodel.damp)
+        #     gdmodel.sense_count .= zero(gdmodel.sense_count)
+        # end
         gdmodel.sense_count .+= gdmodel.sense
 
         # verbose

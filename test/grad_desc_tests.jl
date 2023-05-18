@@ -29,7 +29,7 @@ let
         @show gdmodel.ϵi
         @show gdmodel.iter
         @show up_fun(gdmodel)
-        @test all(isapprox.(up_fun(gdmodel), target; atol = 1e-3))
+        @test isapprox(up_fun(gdmodel), target; atol = 1e-3)
         println()
     end
 
@@ -56,7 +56,7 @@ let
             @show gdmodel.ϵi
             @show gdmodel.iter
             @show up_fun(gdmodel)
-            @test all(isapprox.(up_fun(gdmodel), target; atol = 1e-3))
+            @test isapprox(up_fun(gdmodel), target; atol = 1e-3)
             println()
         end
     end

@@ -5,7 +5,7 @@ function empty_fixxed!(lep::LEPModel; eps = 0.0, protect = [])
 
     protect = colindex(lep, protect)
 
-    M, N = size(lep)
+    _, N = size(lep)
 
     non_protected = trues(N)
     non_protected[protect] .= false
@@ -19,7 +19,7 @@ function empty_fixxed!(lep::LEPModel; eps = 0.0, protect = [])
         end
     end
     
-    # balance
+    # new balance
     lep.b .= lep.b - lep.S * (fixxed .* lep.lb)
 
     # del 
