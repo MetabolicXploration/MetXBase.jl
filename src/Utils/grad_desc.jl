@@ -107,6 +107,9 @@ function grad_desc_vec!(f::Function, gdmodel::GDModel{T};
         get_step::Function = _default_get_step,
     ) where {T<:AbstractArray}
 
+    # @show x0
+    # @show gdmodel.xi
+
     # initializing
     gdmodel.xi .= x0
     gdmodel.fi .= f(gdmodel)

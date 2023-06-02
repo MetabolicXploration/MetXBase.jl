@@ -14,7 +14,7 @@ function search(fun::Function, net, hint, fields;
     ctn_ = [] # contains
     edw_ = [] # ends with
 
-    up = uppercase
+    up = (x) -> uppercase(string(x))
     up_hint = up(hint)
     for field in fields
         dat = getfield(net, field)
