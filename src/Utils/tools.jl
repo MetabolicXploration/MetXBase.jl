@@ -1,6 +1,9 @@
 _dense(v::AbstractSparseMatrix) = Matrix(v)
 _dense(v::AbstractSparseVector) = Vector(v)
-_dense(v::AbstractArray) = v
+_dense(v) = v
+
+_sparse(v::AbstractArray) = sparse(v)
+_sparse(v) = v
 
 export extract_fields
 function extract_fields(obj, fields = fieldnames(typeof(obj)))
