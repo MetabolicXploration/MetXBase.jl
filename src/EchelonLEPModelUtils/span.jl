@@ -1,19 +1,41 @@
 # --------------------------------------------
 # TODO: Use this kind of interface in other places where im recicling 
 # a vector to avoid allocations (e.g. sample!)
-function span!(v::Vector, elep::EchelonLEPModel, vf::Vector)
-    v[elep.idxd] .= elep.lep.b - elep.G * vf
-    v[elep.idxf] .= vf
+function span!(v::Vector, elep::EchelonLEPModel, vi::Vector)
+    v[elep.idxd] .= elep.lep.b - elep.G * vi
+    v[elep.idxf] .= vi
     return v
 end
 
-span(elep::EchelonLEPModel, vf::Vector) = span!(zeros(size(elep, 2)), elep, vf)
+span(elep::EchelonLEPModel, vi::Vector) = span!(zeros(size(elep, 2)), elep, vi)
 
-function isfeasible_vf!(v::Vector, lb::Vector, ub::Vector;
-       testfree = true
+# function isfeasible_vf!(v::Vector, elep::EchelonLEPModel, lb::Vector, ub::Vector;
+#        testfree = true
+#     )
+
+#     # Test dependent
+#     for i in elep.idxd
+#         v[i] < lb[i] && return false
+#         v[i] > ub[i] && return false
+#     end
+
+#     # Test free
+#     testfree || return true
+#     for i in elep.idxf
+#         v[i] < lb[i] && return false
+#         v[i] > ub[i] && return false
+#     end
+
+#     return true
+# end
+
+function isfeasible_vf!(v::Vector, elep::EchelonLEPModel, vi::Vector;
+        testfree = true
     )
-
+    span!(v, elep, vi)
+    
     # Test dependent
+    lb, ub = elep.lep.lb, elep.lep.ub
     for i in elep.idxd
         v[i] < lb[i] && return false
         v[i] > ub[i] && return false
@@ -27,15 +49,10 @@ function isfeasible_vf!(v::Vector, lb::Vector, ub::Vector;
     end
 
     return true
+
+    # return isfeasible_vf!(v, elep.lep, elep.lep.lb, elep.lep.ub; testfree)
 end
 
-function isfeasible_vf!(v::Vector, elep::EchelonLEPModel, vf::Vector;
-        testfree = true
-    )
-    span!(v, elep, vf)
-    return isfeasible_vf!(v, elep.lep.lb, elep.lep.ub; testfree)
-end
-
-isfeasible_vf(elep::EchelonLEPModel, vf::Vector; testfree = true) = 
-    isfeasible_vf!(zeros(size(elep, 2)), elep, vf; testfree)
+isfeasible_vf(elep::EchelonLEPModel, vi::Vector; testfree = true) = 
+    isfeasible_vf!(zeros(size(elep, 2)), elep, vi; testfree)
 

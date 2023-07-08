@@ -61,12 +61,12 @@ end
 """
 function LEPModel(template::LEPModel; to_overwrite...)
     
-    new_metnet_dict = Dict{Symbol, Any}(to_overwrite)
+    new_dict = Dict{Symbol, Any}(to_overwrite)
 
     for field in fieldnames(typeof(template))
-        haskey(new_metnet_dict, field) && continue # avoid use the template version
-        new_metnet_dict[field] = getfield(template, field)
+        haskey(new_dict, field) && continue # avoid use the template version
+        new_dict[field] = getfield(template, field)
     end
     
-    return LEPModel(;new_metnet_dict...)
+    return LEPModel(;new_dict...)
 end
