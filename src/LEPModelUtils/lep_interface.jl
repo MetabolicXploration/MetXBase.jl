@@ -20,18 +20,17 @@ ub(lep, ider) = lep.ub[colindex(lep, ider)]
 lb(lep) = lep.lb
 lb(lep, ider) = lep.lb[colindex(lep, ider)]
 
-export balance
+export balance # re-export
 balance(lep) = lep.b
 balance(lep, ider) = lep.b[rowindex(lep, ider)]
 
 bounds(lep, ider) = (idx = colindex(lep, ider); (lb(lep, idx), ub(lep, idx)))
 
-# TODO: rename to reflect that it is for optimizations
-linear_coefficients(lep) = lep.c
-linear_coefficients(lep, ider) = lep.c[colindex(lep, ider)]
+linear_weights(lep) = lep.c
+linear_weights(lep, ider) = lep.c[colindex(lep, ider)]
 
-quad_coefficients(lep) = lep.C
-quad_coefficients(lep, rider, cider) = lep.C[rowindex(lep, rider), colindex(lep, cider)]
+quad_weights(lep) = lep.C
+quad_weights(lep, rider, cider) = lep.C[rowindex(lep, rider), colindex(lep, cider)]
 
 ## -------------------------------------------------------------------
 # LEP Setters
@@ -69,15 +68,15 @@ function bounds!(lep, ider;
 end
 
 # TODO: rename to reflect that it is for optimizations
-function linear_coefficients!(lep, ider, val) 
+function linear_weights!(lep, ider, val) 
     _setindex!(lep.c, zero(eltype(lep.c)))
     idxs = colindex(lep, ider)
     _setindex!(lep.c, idxs, val)
     return lep.c
 end
-linear_coefficients!(lep, val) = linear_coefficients!(lep, Colon(), val) 
+linear_weights!(lep, val) = linear_weights!(lep, Colon(), val) 
 
-quad_coefficients!(lep, rider, cider, val) =  
+quad_weights!(lep, rider, cider, val) =  
     (_setindex!(lep.C, rowindex(lep, rider), colindex(lep, cider), val); lep)
 
 ## -------------------------------------------------------------------

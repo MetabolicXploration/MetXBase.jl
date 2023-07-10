@@ -5,7 +5,6 @@
 
 const EMPTY_SPOT = ""
 
-export empty_row!
 function _empty_row!(lep::LEPModel, row)
     rowi = rowindex(lep, row)
     _setindex!(lep.rowids, rowi, EMPTY_SPOT)
@@ -14,7 +13,6 @@ function _empty_row!(lep::LEPModel, row)
 end
 empty_row!(lep::LEPModel, row) = (_empty_row!(lep, row); empty_void_iders!(lep))
 
-export empty_col!
 function _empty_col!(lep::LEPModel, col)
 
     coli = colindex(lep, col)
@@ -26,7 +24,6 @@ end
 empty_col!(lep::LEPModel, col) = (_empty_col!(lep, col); empty_void_iders!(lep))
 
 # soft del iders with not impact on the network (e.g. contraints with all coes zero)
-export empty_void_iders!
 function empty_void_iders!(lep::LEPModel; 
         iters = 500 # to be sure
     )
@@ -54,7 +51,6 @@ end
 
 # TODO: Test all this
 # return a model without EMPTY_SPOT iders
-export emptyless_model
 function emptyless_model(lep::LEPModel)
     
     rowids, colids = Colon(), Colon()

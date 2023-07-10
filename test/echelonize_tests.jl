@@ -19,14 +19,14 @@ let
     @test rank(S) == length(idxd)
     
     # echelonize
-    @time idxf, idxd, idxmap, G, be = echelonize(S, b; tol = 1e-10)
-    Nf = length(idxf)
+    @time idxi, idxd, idxmap, G, be = echelonize(S, b; tol = 1e-10)
+    Nf = length(idxi)
     Nd = length(idxd)
     @show size(G)
     @test Nf + Nd == N
     @test all(sort(idxmap) .== collect(1:N))
     @test length(be) == rank(S)
-    @test isempty(intersect(idxf, idxd))
+    @test isempty(intersect(idxi, idxd))
 
     println()
 end

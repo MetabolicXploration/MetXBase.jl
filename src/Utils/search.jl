@@ -1,6 +1,5 @@
 # Search in some 'fields' for a match
 # TODO: Make a more powerful search engine (use StringRepFilter?)
-export search
 function search(fun::Function, net, hint, fields; 
         maxprint = 50, 
     )

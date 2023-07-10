@@ -1,6 +1,5 @@
 # # Code derived from metabolicEP (https://github.com/anna-pa-m/Metabolic-EP)
 
-# export basis_rxns
 # function basis_rxns(X::AbstractMatrix; 
 #         tol::Float64 = 1e-10,
 #         include = nothing # TODO: implement this (try to include the given cols in the independent set)
@@ -19,7 +18,6 @@
 
 # basis_rxns(S::AbstractMatrix, b::AbstractVector; kwargs...) = basis_rxns(_dense(S), _dense(b); kwargs...)
 
-# export echelonize
 # function echelonize(X::DenseMatrix, v::DenseVector; 
 #         tol::Real = 1e-10
 #     )
@@ -34,8 +32,8 @@
 #     Mred = length(idxrow)
 
 #     idxd = basis_rxns(X; tol)
-#     idxf = setdiff(1:N, idxd)
-#     idxmap = vcat(idxd, idxf)
+#     idxi = setdiff(1:N, idxd)
+#     idxmap = vcat(idxd, idxi)
 #     Tv = @view X[idxrow, idxmap]
 #     iTv = inv(Tv[1:Mred, 1:Mred])
 #     IG = iTv * Tv
@@ -52,19 +50,19 @@
 #     G = IG[:, (length(idxd) + 1):end]
 #     basis = zeros(0,0) # TODO: compute the basis
 
-#     return idxf, idxd, idxmap, G, bnew, basis
+#     return idxi, idxd, idxmap, G, bnew, basis
 
 # end
 
 # echelonize(X::AbstractMatrix, v::AbstractVector; tol::Real = 1e-10) = echelonize(_dense(X), _dense(v); tol)
 
-# function basis_mat(G::Matrix, idxf::Vector, idxd::Vector)
-#     Nf, Nd = length(idxf), length(idxd)
+# function basis_mat(G::Matrix, idxi::Vector, idxd::Vector)
+#     Nf, Nd = length(idxi), length(idxd)
 #     basis = zeros(Nd + Nf, Nf)
 #     basis[idxd, :] = -G
-#     # basis[idxf, :] = Matrix(I, Nf, Nf)
+#     # basis[idxi, :] = Matrix(I, Nf, Nf)
 #     c1 = one(eltype(basis))
-#     @inbounds for (i, f) in enumerate(idxf)
+#     @inbounds for (i, f) in enumerate(idxi)
 #         basis[f, i] = c1
 #     end
 #     return basis

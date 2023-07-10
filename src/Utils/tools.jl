@@ -5,7 +5,6 @@ _dense(v) = v
 _sparse(v::AbstractArray) = sparse(v)
 _sparse(v) = v
 
-export extract_fields
 function extract_fields(obj, fields = fieldnames(typeof(obj)))
     sdict = Dict{Symbol, Any}()
     for f in fields

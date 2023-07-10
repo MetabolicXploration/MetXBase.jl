@@ -1,4 +1,3 @@
-export resize
 function resize(lep::LEPModel;
         nrows = _length_or_nothing(lep.rowids),
         ncols = _length_or_nothing(lep.colids),

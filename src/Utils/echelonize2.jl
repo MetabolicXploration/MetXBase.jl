@@ -1,46 +1,47 @@
-export basis_rxns
+
 function basis_rxns(S::DenseMatrix, b::DenseVector; 
         tol::Float64 = 1e-10,
-        include = nothing # TODO: implement this (try to include the given cols in the independent set)
+        include = nothing, # TODO: implement this (try to include the given cols in the independent set)
+        verbose = false
     )
 
     Ab = hcat(S, b)
-    _, idxd = _rref!(Ab; tol)
+    _, idxd = _rref!(Ab; tol, verbose)
     return idxd
 end
 
 basis_rxns(S::AbstractMatrix, b::AbstractVector; kwargs...) = basis_rxns(_dense(S), _dense(b); kwargs...)
 
-export echelonize 
-function echelonize(X::DenseMatrix, v::DenseVector; tol::Real = 1e-10)
+function echelonize(X::DenseMatrix, v::DenseVector; tol::Real = 1e-10, verbose = false)
 
     # @info "echelonize2"
 
     M, N = size(X)
     @assert M <= N
     Ab = hcat(X, v)
-    A, idxd = _rref!(Ab; tol)
+    A, idxd = _rref!(Ab; tol, verbose)
     Nd = length(idxd)
     A = view(A, 1:Nd, :)
-    idxf = setdiff(1:N, idxd)
-    Nf = length(idxf)
-    G = A[:, idxf]
+    idxi = setdiff(1:N, idxd)
+    Nf = length(idxi)
+    G = A[:, idxi]
     be = A[:, end]
-    idxmap = vcat(idxd, idxf)
+    idxmap = vcat(idxd, idxi)
 
-    return idxf, idxd, idxmap, G, be
+    return idxi, idxd, idxmap, G, be
 
 end
 
-echelonize(X::AbstractMatrix, v::AbstractVector; tol::Real = 1e-10) = echelonize(_dense(X), _dense(v); tol)
+echelonize(X::AbstractMatrix, v::AbstractVector; tol::Real = 1e-10, verbose = false) = 
+    echelonize(_dense(X), _dense(v); tol, verbose)
 
-function basis_mat(G::Matrix, idxf::Vector, idxd::Vector)
-    Nf, Nd = length(idxf), length(idxd)
+function basis_mat(G::Matrix, idxi::Vector, idxd::Vector)
+    Nf, Nd = length(idxi), length(idxd)
     basis = zeros(Nd + Nf, Nf)
     basis[idxd, :] = -G
-    # basis[idxf, :] = Matrix(I, Nf, Nf)
+    # basis[idxi, :] = Matrix(I, Nf, Nf)
     c1 = one(eltype(basis))
-    @inbounds for (i, f) in enumerate(idxf)
+    @inbounds for (i, f) in enumerate(idxi)
         basis[f, i] = c1
     end
     return basis
@@ -51,12 +52,13 @@ end
 # which in a net extended matrix (Sb) is not a flux column.
 
 # Derived from https://github.com/blegat/RowEchelon.jl
-function _rref!(A::DenseArray; tol::Float64=1e-10)
+function _rref!(A::DenseArray; tol::Float64=1e-10, verbose = false)
 
     T = eltype(A)
     nr, nc = size(A)
     idxd = Int[]
     i = j = 1
+    verbose && (prog = ProgressThresh(0; dt = 0.1, desc = "_rref! ", showspeed = true);)
     @inbounds while i <= nr && j <= nc
         (m, mi) = findmax(abs, view(A, i:nr, j))
         mi = mi+i - 1
@@ -67,7 +69,7 @@ function _rref!(A::DenseArray; tol::Float64=1e-10)
             j += 1
         else
             push!(idxd, j) 
-            for k=j:nc
+            for k = j:nc
                 A[i, k], A[mi, k] = A[mi, k], A[i, k]
             end
             d = A[i,j]
@@ -85,6 +87,11 @@ function _rref!(A::DenseArray; tol::Float64=1e-10)
             i += 1
             j += 1
         end
+        verbose && update!(prog, min(nr - i, nc - j); 
+            showvalues = [(:row, i), (:column, j), (:idxd_len, length(idxd))]
+        )
     end
+    verbose && finish!(prog)
+
     return A, idxd
 end

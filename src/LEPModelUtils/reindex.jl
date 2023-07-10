@@ -1,5 +1,4 @@
 # TODO: makes a general reindex interface
-export reindex
 function reindex(lep::LEPModel, rowids, colids)
 
     colids = colindex(lep, colids)

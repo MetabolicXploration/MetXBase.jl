@@ -18,6 +18,7 @@ module MetXBase
     using LinearAlgebra
     using LinearAlgebra: inv!
     using StringRepFilter
+    using Base.Threads
     
     import Printf: @sprintf
     import SpecialFunctions: erf
@@ -51,6 +52,7 @@ module MetXBase
 
     #! include LEPModelUtils
     include("LEPModelUtils/base.jl")
+    include("LEPModelUtils/echelonize.jl")
     include("LEPModelUtils/empty_fixxed.jl")
     include("LEPModelUtils/empty_interface.jl")
     include("LEPModelUtils/lep_interface.jl")

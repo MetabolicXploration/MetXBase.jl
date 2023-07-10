@@ -1,6 +1,5 @@
 # Reduce the fixxed colums $ub = lb$
 # It move any constant balance to $b$
-export empty_fixxed!
 function empty_fixxed!(lep::LEPModel; eps = 0.0, protect = [])
 
     protect = colindex(lep, protect)

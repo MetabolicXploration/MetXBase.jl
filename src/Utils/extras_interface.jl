@@ -4,28 +4,22 @@
 # TODO: pretty print extras
 # TODO: create a cache_rebuild needed interface/recommendation
 
-export extras
 extras(obj) = error("Method extras(obj::$(typeof(obj)))::Dict not defined")
 extras(obj, k) = getindex(extras(obj), k)
 extras(obj, k, dflt) = get(extras(obj), k, dflt)
 
-export extras!  
-export extras!! 
 extras!(obj, k, val) = setindex!(extras(obj), val, k)
 extras!(f::Function, obj, k) = setindex!(extras(obj), f(), k)
 extras!!(obj, k, dflt) = get!(extras(obj), k, dflt)
 extras!!(f::Function, obj, k) = get!(f, extras(obj), k)
 
-export hasextras
 hasextras(obj, k) = haskey(extras(obj), k)
 
-export empty_extra!
 empty_extra!(obj) = empty!(extras(obj))
 
 ## ------------------------------------------------------------------
 # API Utils
 
-export @extras_dict_interface
 macro extras_dict_interface(OT::Symbol, name::Symbol)
 
     # names
@@ -69,7 +63,6 @@ macro extras_dict_interface(OT::Symbol, name::Symbol)
     end 
 end
 
-export @extras_val_interface
 macro extras_val_interface(OT::Symbol, name::Symbol, RT::Symbol)
 
     # names
@@ -99,7 +92,6 @@ macro reg_extras_val_interface(name::Symbol)
     # names
     name! = Symbol(string(name), "!")
     return quote
-        export $(name), $(name!)
 
         function $(esc(name)) end
         function $(esc(name!)) end
@@ -112,7 +104,6 @@ macro reg_extras_dict_interface(name::Symbol)
     name!! = Symbol(string(name), "!!")
 
     return quote
-        export $(name), $(name!), $(name!!)
 
         function $(esc(name)) end
         function $(esc(name!)) end

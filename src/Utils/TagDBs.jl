@@ -2,7 +2,6 @@
 # # Implement InvertedIndices.jl stuff
 
 # # ------------------------------------------------------------------
-# export TagDB
 # struct TagDB
 #     dat::Vector{Dict}
 #     TagDB() = new(Vector{Dict}[])
@@ -117,7 +116,6 @@
 #     return nothing
 # end
 
-# export doquery
 # function doquery(f::Function, db::TagDB, q, qs...; 
 #         errflag = true
 #     ) 
@@ -147,7 +145,6 @@
 # end
 # _query(db::TagDB, errflag::Bool, extract, q, qs...; kwargs...) = _query(db, errflag, keyval(extract), q, qs...; kwargs...)
 
-# export query
 # function query(db::TagDB, q, qs...; 
 #         extract = identity, errflag = true, 
 #         sortby = nothing, rev = false
@@ -195,7 +192,6 @@
 # _queryfirst(db::TagDB, errflag::Bool, extract, q, qs...) = 
 #     _queryfirst(db, errflag, keyval(extract), q, qs...)
 
-# export queryfirst
 # function queryfirst(db::TagDB, q, qs...; 
 #         extract = identity, 
 #         errflag = true
@@ -203,7 +199,6 @@
 #     _queryfirst(db, errflag, extract, q, qs...)
 # end
 
-# export getfirst!
 # function getfirst!(f::Function, db::TagDB, q, qs...)
 #     obj = _queryfirst(db, false, identity, q, qs...)
 #     if isnothing(obj)
@@ -215,7 +210,6 @@
 #     return obj
 # end
 
-# export setfirst!
 # function setfirst!(f!::Function, db::TagDB, q, qs...)
 #     obj = _queryfirst(db, false, identity, q, qs...)
 #     if isnothing(obj)
@@ -248,7 +242,6 @@
 
 
 # # ------------------------------------------------------------------
-# export keyval
 # function keyval(obj::Dict, q)
 #     for k in keys(obj)
 #         _ismatch(k, q) && return getindex(obj, k)

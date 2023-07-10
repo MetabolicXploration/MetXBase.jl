@@ -5,17 +5,17 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
     
     # echelonize
     G::MT
-    idxf::Vector{Int}
+    idxi::Vector{Int}
     idxd::Vector{Int}
     idxmap_inv::Vector{Int}
 
     # extras
     extras::Dict
 
-    function EchelonLEPModel(lep::LEPModel; tol = 1e-10)
+    function EchelonLEPModel(lep::LEPModel; tol = 1e-10, verbose = false)
 
         # cache lep
-        idxf, idxd, idxmap, G, be = echelonize(lep.S, lep.b; tol)
+        idxi, idxd, idxmap, G, be = echelonize(lep; tol, verbose)
         idxmap_inv = sortperm(idxmap)
         Nd, _ = size(G)
         IG = hcat(Matrix(I, Nd, Nd), G)[:, idxmap_inv]
@@ -30,7 +30,7 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
         )
 
         G = convert(MT, G)
-        return new{MT, VT}(lep1, G, idxf, idxd, idxmap_inv, Dict())
+        return new{MT, VT}(lep1, G, idxi, idxd, idxmap_inv, Dict())
     end
     
     # EchelonLEPModel() = new{Nothing, Nothing}(LEPModel(), Float64[;;], Int[], Int[], Int[], Dict())

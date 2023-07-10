@@ -1,2 +1,1 @@
-export AbstractLEPModel
 abstract type AbstractLEPModel end

@@ -7,7 +7,7 @@ function summary(io::IO, elep::EchelonLEPModel;
     _print_summary_head(io)
     _print_stoi_summary(io, metnet(elep))
     
-    printstyled(io, string("free rxns: ", length(elep.idxf)), color = INFO_COLOR)
+    printstyled(io, string("free rxns: ", length(elep.idxi)), color = INFO_COLOR)
     println(io)
     printstyled(io, string("dep rxns: ", length(elep.idxd)), color = INFO_COLOR)
     println(io)

@@ -3,7 +3,7 @@
 # a vector to avoid allocations (e.g. sample!)
 function span!(v::Vector, elep::EchelonLEPModel, vi::Vector)
     v[elep.idxd] .= elep.lep.b - elep.G * vi
-    v[elep.idxf] .= vi
+    v[elep.idxi] .= vi
     return v
 end
 
@@ -21,7 +21,7 @@ span(elep::EchelonLEPModel, vi::Vector) = span!(zeros(size(elep, 2)), elep, vi)
 
 #     # Test free
 #     testfree || return true
-#     for i in elep.idxf
+#     for i in elep.idxi
 #         v[i] < lb[i] && return false
 #         v[i] > ub[i] && return false
 #     end
@@ -43,7 +43,7 @@ function isfeasible_vf!(v::Vector, elep::EchelonLEPModel, vi::Vector;
 
     # Test free
     testfree || return true
-    for i in elep.idxf
+    for i in elep.idxi
         v[i] < lb[i] && return false
         v[i] > ub[i] && return false
     end
