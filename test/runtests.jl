@@ -16,6 +16,7 @@ Random.seed!(1234)
     include("echelonize_tests.jl")
     include("grad_desc_tests.jl")
     include("TagDB_tests.jl")
+    include("metxmat_io_tests.jl")
 
 
 end

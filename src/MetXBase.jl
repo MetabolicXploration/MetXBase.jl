@@ -22,6 +22,7 @@ module MetXBase
     
     import Printf: @sprintf
     import SpecialFunctions: erf
+    import MAT
 
     #! include .
 
@@ -43,6 +44,7 @@ module MetXBase
     include("Utils/iders_interface.jl")
     include("Utils/inplaceinverse.jl")
     include("Utils/linear_fit.jl")
+    include("Utils/metxmat_io.jl")
     include("Utils/mgrscho.jl")
     include("Utils/nearPD.jl")
     include("Utils/printing.jl")
@@ -56,9 +58,11 @@ module MetXBase
     include("LEPModelUtils/empty_fixxed.jl")
     include("LEPModelUtils/empty_interface.jl")
     include("LEPModelUtils/lep_interface.jl")
+    include("LEPModelUtils/metxmat_io.jl")
     include("LEPModelUtils/rand_lep.jl")
     include("LEPModelUtils/reindex.jl")
     include("LEPModelUtils/resize.jl")
+    include("LEPModelUtils/toy_model.jl")
     
     #! include AbstractLEPModelUtils
     include("AbstractLEPModelUtils/base.jl")
@@ -69,8 +73,10 @@ module MetXBase
     #! include EchelonLEPModelUtils
     include("EchelonLEPModelUtils/base.jl")
     include("EchelonLEPModelUtils/lep_interface.jl")
+    include("EchelonLEPModelUtils/metxmat_io.jl")
     include("EchelonLEPModelUtils/span.jl")
     include("EchelonLEPModelUtils/summary.jl")
+    include("EchelonLEPModelUtils/toy_model.jl")
     
     @_exportall_underscore()
     @_exportall_non_underscore()

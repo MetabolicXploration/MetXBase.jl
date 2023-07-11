@@ -12,16 +12,18 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
     # extras
     extras::Dict
 
-    function EchelonLEPModel(lep::LEPModel; tol = 1e-10, verbose = false)
+    function EchelonLEPModel(lep::LEPModel{MT, VT}, G::MT, idxi::Vector{Int}, idxd::Vector{Int}, idxmap_inv::Vector{Int}) where {MT, VT}
+        # TODO: Add consistency checks (between lep and G, ...)
+        new{MT, VT}(lep, G, idxi, idxd, idxmap_inv)
+    end
+
+    function EchelonLEPModel(lep::LEPModel{MT, VT}; tol = 1e-10, verbose = false) where {MT, VT}
 
         # cache lep
         idxi, idxd, idxmap, G, be = echelonize(lep; tol, verbose)
         idxmap_inv = sortperm(idxmap)
         Nd, _ = size(G)
         IG = hcat(Matrix(I, Nd, Nd), G)[:, idxmap_inv]
-        
-        MT = matrix_type(lep)
-        VT = vector_type(lep)
 
         lep1 = LEPModel(lep;
             S = convert(MT, IG),

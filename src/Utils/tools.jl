@@ -5,15 +5,14 @@ _dense(v) = v
 _sparse(v::AbstractArray) = sparse(v)
 _sparse(v) = v
 
-function extract_fields(obj, fields = fieldnames(typeof(obj)))
-    sdict = Dict{Symbol, Any}()
+function extract_fields(obj, fields = fieldnames(typeof(obj)); keymap = Symbol)
+    sdict = Dict()
     for f in fields
         v = getfield(obj, f)
-        sdict[f] = v
+        sdict[keymap(f)] = v
     end
     return sdict
 end
-
 
 const _sci_pool = Dict{Int, Symbol}()
 let
