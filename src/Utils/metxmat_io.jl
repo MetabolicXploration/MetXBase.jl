@@ -1,3 +1,15 @@
+function _parse_metxmat_dict(sdict)
+
+    # Recover a sparce vector
+    if all(haskey.([sdict], ["n", "nzind", "nzval"]))
+        vec = spzeros(sdict["n"])
+        vec[sdict["nzind"]] = sdict["nzval"]
+        return vec
+    end
+
+    return sdict
+  
+end
 
 ## ------------------------------------------------------------
 function _filter_metxmat_write_noncompat_types!(dict)
