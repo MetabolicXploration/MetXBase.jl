@@ -11,6 +11,7 @@ Random.seed!(1234)
 @testset "MetXBase.jl" begin
 
     # Utils
+    include("tools_tests.jl")
     include("IterChunks_tests.jl")
     include("manipulation_tests.jl")
     include("echelonize_tests.jl")

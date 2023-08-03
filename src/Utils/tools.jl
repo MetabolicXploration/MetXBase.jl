@@ -110,22 +110,28 @@ function _find_nearest(x::Real, r::AbstractRange)
     return _find_nearest(x, x0, step(r))
 end
 
-function _histogram!(bins::AbstractRange, hist::AbstractVector, vi::Number, wi::Number = one(vi))
+_sqerr(ri, x) = (x - ri)^2
+_sqerr(x) = Base.Fix2(_sqerr, x)
+
+_find_nearest(x::Real, r::AbstractVector) = last(findmin(_sqerr(x), r))
+
+
+function _histogram!(bins::AbstractVector, hist::AbstractVector, vi::Number, wi::Number = one(vi))
     nearest = _find_nearest(vi, bins)
     hist[nearest] += wi
 end
-function _histogram!(bins::AbstractRange, hist::AbstractVector, vs::AbstractVector, ws::AbstractVector = one.(vs))
+function _histogram!(bins::AbstractVector, hist::AbstractVector, vs::AbstractVector, ws::AbstractVector = one.(vs))
     for i in eachindex(vs)
         _histogram!(bins, hist, vs[i], ws[i])
     end
     return (bins, hist)
 end
 
-function _histogram(bins::AbstractRange, vs::AbstractVector, ws::AbstractVector)
+function _histogram(bins::AbstractVector, vs::AbstractVector, ws::AbstractVector)
     hist = zeros(length(bins))
     _histogram!(bins, hist, vs, ws)
 end
-_histogram(bins::AbstractRange, vs::AbstractVector) =
+_histogram(bins::AbstractVector, vs::AbstractVector) =
     _histogram(bins, vs, ones(length(vs)))
 
 function _histogram(vs::AbstractVector, ws::AbstractVector, nbins::Int)
