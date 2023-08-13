@@ -32,6 +32,7 @@ module MetXBase
     include("Types/2_EchelonLEPModel.jl")
     
     #! include Utils
+    include("Utils/Histograms.jl")
     include("Utils/IterChunks.jl")
     include("Utils/TagDBs.jl")
     include("Utils/callback_utils.jl")

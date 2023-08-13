@@ -4,6 +4,7 @@ using RunTestsEnv
 using MetXBase
 using Test
 using LinearAlgebra
+using Base.Threads
 
 import Random
 Random.seed!(1234)

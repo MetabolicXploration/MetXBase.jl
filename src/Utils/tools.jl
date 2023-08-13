@@ -115,7 +115,7 @@ _sqerr(x) = Base.Fix2(_sqerr, x)
 
 _find_nearest(x::Real, r::AbstractVector) = last(findmin(_sqerr(x), r))
 
-
+# TODO: deprecate
 function _histogram!(bins::AbstractVector, hist::AbstractVector, vi::Number, wi::Number = one(vi))
     nearest = _find_nearest(vi, bins)
     hist[nearest] += wi
