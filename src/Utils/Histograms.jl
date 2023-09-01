@@ -52,7 +52,8 @@ end
 bins(h::Histogram) = keys(h)
 counts(h::Histogram) = values(h)
 counts(h::Histogram{T}, k::T) where T = h.count_dict[k]
-counts(h::Histogram{T}, ks::AbstractArray{T}) where T = [h.count_dict[k] for k in ks]
+counts(h::Histogram{T}, ks::AbstractArray{T}) where T = [counts(h, k) for k in ks]
+counts(h::Histogram{T}, ks::Base.KeySet{T}) where T = [counts(h, k) for k in ks]
 
 import Base.count!
 function count!(h::Histogram{T}, v) where T
@@ -101,7 +102,7 @@ end
 
 function range_histogram(x0, x1; kwargs...)
     r = range(x0, x1; kwargs...)
-    return rangehistogram(r)
+    return range_histogram(r)
 end
 
 # identity_histogram
