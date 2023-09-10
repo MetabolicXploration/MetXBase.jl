@@ -1,10 +1,22 @@
-# Must methods here only `delete` an ider by just overwriting it with 'EMPTY_SPOT' and modifiying S with 0.
+# Must methods here only `delete` an ider by just overwriting it with 'EMPTY_SPOT'.
 # Additionally they modify the stoi matrix
 # Then we can create a new lep without them (emptyless_model)
 # WARNING: The intermediate state is inconsistent
 
 const EMPTY_SPOT = ""
+findfirst_empty_spot(lep, ids_getter::Function) = 
+    findfirst(isequal(EMPTY_SPOT), ids_getter(lep))
 
+function findindex_or_empty_spot(model, getter, ider)
+    indx = _hasid(model, getter, ider) ?
+        _getindex(model, getter, ider) :
+        findfirst_empty_spot(model, getter)
+    isnothing(indx) && error("Non empty spot available, ider: ($ider), getter: $(nameof(getter))") 
+    return indx 
+end
+    
+
+findfirst_empty_row(lep) = findfirst_empty_spot(lep, rowids)
 function _empty_row!(lep::LEPModel, row)
     rowi = rowindex(lep, row)
     _setindex!(lep.rowids, rowi, EMPTY_SPOT)
@@ -13,6 +25,7 @@ function _empty_row!(lep::LEPModel, row)
 end
 empty_row!(lep::LEPModel, row) = (_empty_row!(lep, row); empty_void_iders!(lep))
 
+findfirst_empty_col(lep) = findfirst_empty_spot(lep, colids)
 function _empty_col!(lep::LEPModel, col)
 
     coli = colindex(lep, col)

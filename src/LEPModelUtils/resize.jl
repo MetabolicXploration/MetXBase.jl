@@ -4,15 +4,18 @@ function resize(lep::LEPModel;
     )
 
     netd = Dict()
+    nrows0, ncols0 = size(lep)
+    nrows = isnothing(nrows) ? size(lep, 1) : nrows
+    ncols = isnothing(ncols) ? size(lep, 2) : ncols
 
     # row stuf
-    if !isnothing(nrows)
+    if nrows0 != nrows
         netd[:rowids] = _resize_or_nothing(lep.rowids, EMPTY_SPOT, nrows)
         netd[:b] = _resize_or_nothing(lep.b, 0.0, nrows)
     end
     
     # col stuf
-    if !isnothing(ncols)
+    if ncols0 != ncols
         netd[:colids] = _resize_or_nothing(lep.colids, EMPTY_SPOT, ncols)
         netd[:c] = _resize_or_nothing(lep.c, 0.0, ncols)
         netd[:lb] = _resize_or_nothing(lep.lb, 0.0, ncols)
@@ -20,7 +23,7 @@ function resize(lep::LEPModel;
     end
     
     # row x col stuf
-    if !isnothing(nrows) && !isnothing(ncols)
+    if nrows0 != nrows || ncols0 != ncols
         netd[:S] = _resize_or_nothing(lep.S, 0.0, nrows, ncols)
         netd[:C] = _resize_or_nothing(lep.C, 0.0, nrows, ncols)
     end

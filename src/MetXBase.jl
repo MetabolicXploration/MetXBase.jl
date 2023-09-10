@@ -55,14 +55,17 @@ module MetXBase
 
     #! include LEPModelUtils
     include("LEPModelUtils/base.jl")
+    include("LEPModelUtils/cons_str.jl")
     include("LEPModelUtils/echelonize.jl")
     include("LEPModelUtils/empty_fixxed.jl")
     include("LEPModelUtils/empty_interface.jl")
     include("LEPModelUtils/lep_interface.jl")
     include("LEPModelUtils/metxmat_io.jl")
+    include("LEPModelUtils/queries.jl")
     include("LEPModelUtils/rand_lep.jl")
     include("LEPModelUtils/reindex.jl")
     include("LEPModelUtils/resize.jl")
+    include("LEPModelUtils/set_constraint.jl")
     include("LEPModelUtils/toy_model.jl")
     
     #! include AbstractLEPModelUtils

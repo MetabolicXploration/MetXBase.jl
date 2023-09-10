@@ -74,6 +74,8 @@ _setindex!(vec, idxs, val) = (vec[idxs] .= val)
 _setindex!(mat, idx0::Int, idx1::Int, val) = (mat[idx0, idx1] = val)
 _setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)
 
+_setindex_or_nothing!(v, i, val) = (isnothing(v) || isempty(v)) ? v : setindex!(v, val, i)
+_setindex_or_nothing!(v, i1, i2, val) = (isnothing(v) || isempty(v)) ? v : setindex!(v, val, i1, i2)
 _getindex_or_nothing(v, i, is...) = (isnothing(v) || isempty(v)) ? v : v[i, is...]
 
 _collect_or_nothing(T, v) = isnothing(v) ? v : collect(T, v)
@@ -81,11 +83,14 @@ _collect_or_nothing(v) = isnothing(v) ? v : collect(eltype(v), v)
 
 function _resize_or_nothing(v0::AbstractArray, fillv, d1, ds...)
     v1 = fill(fillv, d1, ds...)
-    N = min(length(v0), length(v1))
-    for i in 1:N; v1[i] = v0[i]; end
+    # @show v1
+    for i in eachindex(IndexCartesian(), v0)
+        checkbounds(Bool, v1, i) || continue
+        v1[i] = v0[i]
+    end
     return v1
 end
-_resize_or_nothing(v0::Nothing, fillv, d1, ds...) = v0
+_resize_or_nothing(v0::Nothing, _...) = v0
 
 _length_or_nothing(v0) = length(v0)
 _length_or_nothing(::Nothing) = nothing
