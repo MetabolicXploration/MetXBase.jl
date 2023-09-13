@@ -68,10 +68,10 @@ _println_order_summary(v; kwargs...) = _println_order_summary(stdout, v; kwargs.
 
 # solve broadcast issue
 _setindex!(vec, val) = (vec .= val)
-_setindex!(vec, idxs::Int, val) = (vec[idxs] = val)
+_setindex!(vec, idxs::Integer, val) = (vec[idxs] = val)
 _setindex!(vec, idxs, val) = (vec[idxs] .= val)
 
-_setindex!(mat, idx0::Int, idx1::Int, val) = (mat[idx0, idx1] = val)
+_setindex!(mat, idx0::Integer, idx1::Integer, val) = (mat[idx0, idx1] = val)
 _setindex!(mat, idx0, idx1, val) = (mat[idx0, idx1] .= val)
 
 _setindex_or_nothing!(v, i, val) = (isnothing(v) || isempty(v)) ? v : setindex!(v, val, i)
@@ -139,15 +139,15 @@ end
 _histogram(bins::AbstractVector, vs::AbstractVector) =
     _histogram(bins, vs, ones(length(vs)))
 
-function _histogram(vs::AbstractVector, ws::AbstractVector, nbins::Int)
+function _histogram(vs::AbstractVector, ws::AbstractVector, nbins::Integer)
     v0, v1 = extrema(vs)
     bins = range(v0, v1; length = nbins)
     _histogram(bins, vs, ws)
 end
-_histogram(vs::AbstractVector, w::Number, nbins::Int) =
+_histogram(vs::AbstractVector, w::Number, nbins::Integer) =
     _histogram(vs, ones(length(vs)) .* w, nbins)
 
-_histogram(vs::AbstractVector, nbins::Int) =
+_histogram(vs::AbstractVector, nbins::Integer) =
     _histogram(vs, ones(length(vs)), nbins)
 
 function _isapprox(x0, xs...; kwargs...)
