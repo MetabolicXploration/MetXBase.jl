@@ -13,12 +13,13 @@ end
 
 # ------------------------------------------------------------
 import Base.haskey
-Base.haskey(h::Histogram, v) = haskey(h.count_dict, v)
+Base.haskey(h::Histogram, v::Tuple) = haskey(h.count_dict, v)
 import Base.getindex
-Base.getindex(h::Histogram, v) = getindex(h.count_dict, v)
+Base.getindex(h::Histogram, v::Tuple) = getindex(h.count_dict, v)
 import Base.keys
 Base.keys(h::Histogram) = keys(h.count_dict)
-Base.keys(h::Histogram, d::Integer) = (v[d] for v in keys(h.count_dict))
+Base.keys(h::Histogram, dims::Union{AbstractRange, Integer}) = 
+    (v[dims] for v in keys(h.count_dict))
 import Base.values
 Base.values(h::Histogram) = (w::Int for w in values(h.count_dict))
 
@@ -39,6 +40,16 @@ function Base.merge!(h0::Histogram, h1::Histogram, hs::Histogram...)
     return h0
 end
 
+## ------------------------------------------------------------
+function marginal(h0::Histogram, dims::Union{AbstractRange, Integer})
+    dims = dims isa Integer ? (dims:dims) : dims
+    h1 = Histogram(ho.dim_spaces[dims])
+    for (w, v) in zip(values(h0), keys(h0, dims))
+        count!(h1, v, w)
+    end
+    return h1
+end
+
 # ------------------------------------------------------------
 # maps from Space -> bin
 # eltype(Space) must return v's type
@@ -47,11 +58,10 @@ descretize(S::AbstractRange, v) = getindex(S, _find_nearest(v, S))
 descretize(F::Function, v) = F(v) # custom mapping
 descretize(::T, n::T) where T = n # identity
 
-
 # ------------------------------------------------------------
 import Base.count!
-function count!(h::Histogram, v, w = 1)
-    v = tuple((descretize(S, vi) for (S, vi) in zip(h.dim_spaces, v))...)
+function count!(h::Histogram, v::Tuple, w = 1)
+    v = tuple([descretize(S, vi) for (S, vi) in zip(h.dim_spaces, v)]...)
     get!(h.count_dict, v, 0)
     h.count_dict[v] += w
     return h
