@@ -1,4 +1,4 @@
-
+# TODO: integrate with https://juliastats.org/StatsBase.jl/stable/empirical/#StatsBase.Histogram
 ## ------------------------------------------------------------
 struct Histogram{elT}
     dim_spaces::Tuple
@@ -25,7 +25,7 @@ Base.values(h::Histogram) = (w::Int for w in values(h.count_dict))
 # Merge histograms
 import Base.merge!
 function Base.merge!(h0::Histogram, h1::Histogram, hs::Histogram...)
-    count_dict0::Dict{T, Int} = h0.count_dict
+    count_dict0 = h0.count_dict
     for (x, c) in h1.count_dict
         get!(count_dict0, x, 0)
         count_dict0[x] += c
