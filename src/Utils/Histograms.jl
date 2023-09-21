@@ -50,10 +50,10 @@ descretize(::T, n::T) where T = n # identity
 
 # ------------------------------------------------------------
 import Base.count!
-function count!(h::Histogram, v)
+function count!(h::Histogram, v, w = 1)
     v = tuple((descretize(S, vi) for (S, vi) in zip(h.dim_spaces, v))...)
     get!(h.count_dict, v, 0)
-    h.count_dict[v] += 1
+    h.count_dict[v] += w
     return h
 end
 
