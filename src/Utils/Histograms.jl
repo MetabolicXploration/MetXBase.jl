@@ -43,7 +43,7 @@ end
 ## ------------------------------------------------------------
 function marginal(h0::Histogram, dims::Union{AbstractRange, Integer})
     dims = dims isa Integer ? (dims:dims) : dims
-    h1 = Histogram(h0.dim_spaces[dims])
+    h1 = Histogram(h0.dim_spaces[dims]...)
     for (w, v) in zip(values(h0), keys(h0, dims))
         count!(h1, v, w)
     end
