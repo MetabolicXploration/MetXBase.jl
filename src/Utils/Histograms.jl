@@ -22,6 +22,23 @@ Base.keys(h::Histogram, d::Integer) = (v[d] for v in keys(h.count_dict))
 import Base.values
 Base.values(h::Histogram) = (w::Int for w in values(h.count_dict))
 
+# Merge histograms
+import Base.merge!
+function Base.merge!(h0::Histogram, h1::Histogram, hs::Histogram...)
+    count_dict0::Dict{T, Int} = h0.count_dict
+    for (x, c) in h1.count_dict
+        get!(count_dict0, x, 0)
+        count_dict0[x] += c
+    end
+    for hi in hs
+        for (x, c) in hi.count_dict
+            get!(count_dict0, x, 0)
+            count_dict0[x] += c
+        end
+    end
+    return h0
+end
+
 # ------------------------------------------------------------
 # maps from Space -> bin
 # eltype(Space) must return v's type
