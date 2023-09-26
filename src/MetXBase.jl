@@ -4,10 +4,12 @@
 # Este es el paper: Quek2014 - Metabolic flux analysis of HEK cell culture using Recon 2 (reduced version of Recon 2)
 # Download link: https://www.ebi.ac.uk/biomodels/MODEL1504080000
 
-# TODO: MetNet will be only for operation with the non LEPModel fields
+# DONE: MetNet will be only for operation with the non LEPModel fields
 # That is, right now, for nothing else than io and discovery tooling (search, summary, etc)
 # MetXOptim must no depends on MetXGEMs even if the test env has it for MetXNetHub stuf
 # A similar pattern for MetXEP MetXGrids MetXMC
+
+# TODO: Add Graphs.jl kind of functionality for getting basic stuff
 
 module MetXBase
 
