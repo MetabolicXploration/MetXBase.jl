@@ -53,7 +53,7 @@ end
 # ------------------------------------------------------------
 # maps from Space -> bin
 # eltype(Space) must return v's type
-descretize(::Type{T}, v::T) where {T<:Number} = T(n)
+descretize(::Type{T}, v::T) where {T<:Number} = T(v)
 descretize(S::AbstractRange, v) = getindex(S, _find_nearest(v, S))
 descretize(F::Function, v) = F(v) # custom mapping
 descretize(::T, n::T) where T = n # identity
