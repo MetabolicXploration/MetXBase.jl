@@ -67,6 +67,25 @@ function count!(h::Histogram, v::Tuple, w = 1)
     return h
 end
 
+# ------------------------------------------------------------
+# Give a sample vector with similar Histogram
+# scale: scale back the sample vector size
+# ex: [1,2] ~ [1,1,2,2] both vector has the same normilize histogram, 
+# but rhs is half the side of lds
+# For plotting is great to reduce the number of points
+# julia> samples = resample(h0, 2; scale)
+# julia> lines!(ax, eachindex(samples) ./ scale, sort(samples))
+function resample(h::Histogram, dims...; scale = 1.0)
+    _keys = keys(h, dims...)
+    _values = values(h)
+    samples = Vector{typeof(first(_keys))}()
+    for (x, w) in zip(_keys, _values)
+        w = floor(Int, w * scale)
+        push!(samples, fill(x, w)...)
+    end
+    samples
+end
+
 
 # ## ------------------------------------------------------------
 # struct Histogram{T}
