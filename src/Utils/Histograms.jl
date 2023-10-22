@@ -4,10 +4,12 @@ struct Histogram{elT}
     dim_spaces::Tuple
     count_dict::Dict{elT, Int}
     extras::Dict{Symbol, Any}
-    function Histogram(s1, ss...)
+    function Histogram(s1, ss...; names = nothing)
         elT = Tuple{eltype.(tuple(s1, ss...))...}
         ss = tuple(s1, ss...)
-        new{elT}(ss, Dict(), Dict())
+        h = new{elT}(ss, Dict(), Dict())
+        dimnames!(h, names)
+        return h
     end
 end
 
@@ -18,8 +20,8 @@ import Base.getindex
 Base.getindex(h::Histogram, v::Tuple) = getindex(h.count_dict, v)
 import Base.keys
 Base.keys(h::Histogram) = keys(h.count_dict)
-Base.keys(h::Histogram, dims::Union{AbstractRange, Integer}) = 
-    (v[dims] for v in keys(h.count_dict))
+Base.keys(h::Histogram, dims) =
+    (v[dimindex(h0, dims)] for v in keys(h.count_dict))
 import Base.values
 Base.values(h::Histogram) = (w::Int for w in values(h.count_dict))
 
@@ -41,7 +43,8 @@ function Base.merge!(h0::Histogram, h1::Histogram, hs::Histogram...)
 end
 
 ## ------------------------------------------------------------
-function marginal(h0::Histogram, dims::Union{AbstractRange, Integer})
+function marginal(h0::Histogram, dims)
+    dims = dimindex(h0, dims)
     dims = dims isa Integer ? (dims:dims) : dims
     h1 = Histogram(h0.dim_spaces[dims]...)
     for (w, v) in zip(values(h0), keys(h0, dims))
@@ -72,19 +75,30 @@ end
 # scale: scale back the sample vector size
 # ex: [1,2] ~ [1,1,2,2] both vector has the same normilize histogram, 
 # but rhs is half the side of lds
-# For plotting is great to reduce the number of points
+# It is great for plotting and reduce the number of points
 # julia> samples = resample(h0, 2; scale)
 # julia> lines!(ax, eachindex(samples) ./ scale, sort(samples))
-function resample(h::Histogram, dims...; scale = 1.0)
-    _keys = keys(h, dims...)
+function resample(h::Histogram, dims; scale = 1.0)
+    _keys = keys(h, dims)
     _values = values(h)
     samples = Vector{typeof(first(_keys))}()
     for (x, w) in zip(_keys, _values)
         w = floor(Int, w * scale)
         push!(samples, fill(x, w)...)
     end
-    samples
+    return samples
 end
+
+## ------------------------------------------------------------
+# name dimentions
+dimnames(h::Histogram) = h.extras[:_dimnames]
+
+function dimnames!(h::Histogram, names::Vector{String}) 
+    h.extras[:_dimnames] = names
+    return nothing
+end
+
+dimindex(h::Histogram, ider) = _getindex(h, dimnames, ider)
 
 
 # ## ------------------------------------------------------------
