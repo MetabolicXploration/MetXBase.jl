@@ -4,7 +4,7 @@ struct Histogram{elT}
     dim_spaces::Tuple
     count_dict::Dict{elT, Int}
     extras::Dict{Symbol, Any}
-    function Histogram(s1, ss...; names = nothing)
+    function Histogram(s1, ss...; names = String[])
         elT = Tuple{eltype.(tuple(s1, ss...))...}
         ss = tuple(s1, ss...)
         h = new{elT}(ss, Dict(), Dict())
@@ -21,7 +21,7 @@ Base.getindex(h::Histogram, v::Tuple) = getindex(h.count_dict, v)
 import Base.keys
 Base.keys(h::Histogram) = keys(h.count_dict)
 Base.keys(h::Histogram, dims) =
-    (v[dimindex(h0, dims)] for v in keys(h.count_dict))
+    (v[dimindex(h, dims)] for v in keys(h.count_dict))
 import Base.values
 Base.values(h::Histogram) = (w::Int for w in values(h.count_dict))
 
@@ -99,6 +99,8 @@ function dimnames!(h::Histogram, names::Vector{String})
 end
 
 dimindex(h::Histogram, ider) = _getindex(h, dimnames, ider)
+
+dimnames(h::Histogram, dim) = dimnames(h)[dimindex(h, dim)]
 
 
 # ## ------------------------------------------------------------
