@@ -75,6 +75,7 @@ module MetXBase
     include("AbstractLEPModelUtils/extras_interface.jl")
     include("AbstractLEPModelUtils/ider_interface.jl")
     include("AbstractLEPModelUtils/lep_interface.jl")
+    include("AbstractLEPModelUtils/posdef.jl")
     
     #! include EchelonLEPModelUtils
     include("EchelonLEPModelUtils/base.jl")

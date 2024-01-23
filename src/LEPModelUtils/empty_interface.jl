@@ -17,16 +17,17 @@ end
     
 
 findfirst_empty_row(lep) = findfirst_empty_spot(lep, rowids)
-function _empty_row!(lep::LEPModel, row)
+function _empty_row!(lep, row)
     rowi = rowindex(lep, row)
     _setindex!(lep.rowids, rowi, EMPTY_SPOT)
     _setindex!(lep.S, rowi, :, zero(eltype(lep.S)))
     return lep
 end
-empty_row!(lep::LEPModel, row) = (_empty_row!(lep, row); empty_void_iders!(lep))
+empty_row!(lep, row) = (_empty_row!(lep, row); empty_void_iders!(lep))
+has_empty_row(lep) = isnothing(findfirst_empty_row(lep))
 
 findfirst_empty_col(lep) = findfirst_empty_spot(lep, colids)
-function _empty_col!(lep::LEPModel, col)
+function _empty_col!(lep, col)
 
     coli = colindex(lep, col)
     _setindex!(lep.colids, coli, EMPTY_SPOT)
@@ -34,10 +35,11 @@ function _empty_col!(lep::LEPModel, col)
     
     return lep
 end
-empty_col!(lep::LEPModel, col) = (_empty_col!(lep, col); empty_void_iders!(lep))
+empty_col!(lep, col) = (_empty_col!(lep, col); empty_void_iders!(lep))
+has_empty_col(lep) = isnothing(findfirst_empty_col(lep))
 
 # soft del iders with not impact on the network (e.g. contraints with all coes zero)
-function empty_void_iders!(lep::LEPModel; 
+function empty_void_iders!(lep; 
         iters = 500 # to be sure
     )
 
@@ -64,17 +66,17 @@ end
 
 # TODO: Test all this
 # return a model without EMPTY_SPOT iders
-function emptyless_model(lep::LEPModel)
+function emptyless_model(lep)
     
-    rowids, colids = Colon(), Colon()
+    _rowids, _colids = Colon(), Colon()
     
-    if !isnothing(lep.rowids)
-        rowids = findall(lep.rowids .!= EMPTY_SPOT)
+    if !isnothing(rowids(lep))
+        _rowids = findall(rowids(lep) .!= EMPTY_SPOT)
     end
     
-    if !isnothing(lep.colids)
-        colids = findall(lep.colids .!= EMPTY_SPOT)
+    if !isnothing(colids(lep))
+        _colids = findall(colids(lep) .!= EMPTY_SPOT)
     end
 
-    return reindex(lep, rowids, colids)
+    return reindex(lep, _rowids, _colids)
 end

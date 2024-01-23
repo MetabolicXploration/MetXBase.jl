@@ -37,6 +37,7 @@ export balance # re-export
 balance(lep) = balance(lepmodel(lep))
 balance(lep, ider) = balance(lep)[rowindex(lep, ider)]
 
+bounds(lep) = (lb(lep), ub(lep))
 bounds(lep, ider) = (idx = colindex(lep, ider); (lb(lep, idx), ub(lep, idx)))
 
 linear_weights(lep) = linear_weights(lepmodel(lep))
