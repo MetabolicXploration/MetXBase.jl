@@ -70,6 +70,13 @@ function count!(h::Histogram, v::Tuple, w = 1)
     return h
 end
 
+const HISTOGRAMS_LK = ReentrantLock()
+function lk_count!(h::Histogram, v::Tuple, w = 1)
+    lock(HISTOGRAMS_LK) do
+        count!(h, v, w)
+    end
+end
+
 # ------------------------------------------------------------
 # Give a sample vector with similar Histogram
 # scale: scale back the sample vector size
