@@ -23,7 +23,7 @@ let
     h_pool = [deepcopy(h0) for th in 1:nthreads()]
 
     T = 1 # K
-    @threads for _ in 1:nthreads()
+    @threads :static for _ in 1:nthreads()
         h = h_pool[threadid()]
         for it in 1:Int(1e5)
             p = rand()
@@ -65,7 +65,7 @@ let
     # count
     n = 2
     h_pool = [deepcopy(h0) for th in 1:nthreads()]
-    @threads for _ in 1:nthreads()
+    @threads :static for _ in 1:nthreads()
         h = h_pool[threadid()]
         for it in 1:Int(1e6)
             comb = rand(1:5, n)
