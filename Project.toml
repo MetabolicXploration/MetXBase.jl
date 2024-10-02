@@ -6,6 +6,7 @@ version = "0.1.10"
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 MAT = "23992714-dd62-5051-b70f-ba57cb901cac"
+MassExport = "bdad8087-1bf2-41e1-917c-1d9e34c2a82c"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 RunTestsEnv = "aeeda050-7d39-4c85-b6eb-65567cadcf4d"

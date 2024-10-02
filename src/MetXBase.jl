@@ -21,6 +21,7 @@ module MetXBase
     using LinearAlgebra: inv!
     using StringRepFilter
     using Base.Threads
+    using MassExport
     
     import Printf: @sprintf
     import SpecialFunctions: erf
@@ -41,7 +42,6 @@ module MetXBase
     include("Utils/distributions.jl")
     include("Utils/echelonize.jl")
     include("Utils/echelonize2.jl")
-    include("Utils/exportall.jl")
     include("Utils/extras_interface.jl")
     include("Utils/grad_desc.jl")
     include("Utils/iders_interface.jl")
@@ -85,7 +85,7 @@ module MetXBase
     include("EchelonLEPModelUtils/summary.jl")
     include("EchelonLEPModelUtils/toy_model.jl")
     
-    @_exportall_underscore()
-    @_exportall_non_underscore()
+    @exportall_underscore()
+    @exportall_non_underscore()
 
 end

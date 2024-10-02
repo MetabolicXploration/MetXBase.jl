@@ -5,9 +5,9 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
     
     # echelonize
     G::MT
-    idxi::Vector{Int}
-    idxd::Vector{Int}
-    idxmap_inv::Vector{Int}
+    idxi::Vector{Int} # index of the independent variables
+    idxd::Vector{Int} # index of the independent variables
+    idxmap_inv::Vector{Int} 
 
     # extras
     extras::Dict
