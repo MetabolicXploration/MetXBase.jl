@@ -103,6 +103,7 @@ _copy(::Nothing) = nothing
 
 function _find_nearest(x::Real, x0::Real, dx::Real)
     iszero(dx) && return 1
+    isnan(x) && return NaN
     i, d = divrem(x - x0, dx)
     # @show i, d
     return d < (dx / 2) ? Int(i)+1 : Int(i)+2
