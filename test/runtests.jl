@@ -1,6 +1,3 @@
-using RunTestsEnv
-@activate_testenv
-
 using MetXBase
 using Test
 using LinearAlgebra

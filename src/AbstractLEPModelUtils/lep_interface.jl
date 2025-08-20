@@ -15,11 +15,11 @@ cost_matrix(lep) = cost_matrix(lepmodel(lep))
 cost_matrix(lep, rider, cider) = cost_matrix(lep)[rowindex(lep, rider), colindex(lep, cider)]
 cost_matrix_view(lep, rider, cider) = view(cost_matrix(lep), rowindex(lep, rider), colindex(lep, cider))
 
-col_nzcost(lep, ider) = findall(!isequal(0.0), cost_matrix_view(lep, :, ider))
+col_nzcost(lep, ider) = findall(!iszero, cost_matrix_view(lep, :, ider))
 col_negcost(lep, ider) = findall(<(0.0), cost_matrix_view(lep, :, ider))
 col_poscost(lep, ider) = findall(>(0.0), cost_matrix_view(lep, :, ider))
 
-row_nzcost(lep, ider) = findall(!isequal(0.0), cost_matrix_view(lep, ider, :))
+row_nzcost(lep, ider) = findall(!iszero, cost_matrix_view(lep, ider, :))
 row_negcost(lep, ider) = findall(<(0.0), cost_matrix_view(lep, ider, :))
 row_poscost(lep, ider) = findall(>(0.0), cost_matrix_view(lep, ider, :))
 

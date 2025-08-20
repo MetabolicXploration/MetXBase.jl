@@ -12,13 +12,22 @@ end
 
 basis_rxns(S::AbstractMatrix, b::AbstractVector; kwargs...) = basis_rxns(_dense(S), _dense(b); kwargs...)
 
-function echelonize(X::DenseMatrix, v::DenseVector; tol::Real = 1e-10, verbose = false)
+# make so that
+# vi = rand(Ni)
+# vd = be - G * vi
+# v = zeros(N)
+# v[idxi] = vi
+# v[idxd] = vd
+# @assert sum(S * v) < 1e-5
+# Note that a full lepmodel feasibility is also dependent on lb, ub
+# So G * vi = be, lbi \le vi \le ubi is not sufficient, you need to test lbd \le vi \le ubd
+function echelonize(S::DenseMatrix, b::DenseVector; tol::Real = 1e-10, verbose = false)
 
     # @info "echelonize2"
 
-    M, N = size(X)
+    M, N = size(S)
     @assert M <= N
-    Ab = hcat(X, v)
+    Ab = hcat(S, b)
     A, idxd = _rref!(Ab; tol, verbose)
     Nd = length(idxd)
     A = view(A, 1:Nd, :)
@@ -32,8 +41,8 @@ function echelonize(X::DenseMatrix, v::DenseVector; tol::Real = 1e-10, verbose =
 
 end
 
-echelonize(X::AbstractMatrix, v::AbstractVector; tol::Real = 1e-10, verbose = false) = 
-    echelonize(_dense(X), _dense(v); tol, verbose)
+echelonize(X::AbstractMatrix, b::AbstractVector; tol::Real = 1e-10, verbose = false) = 
+    echelonize(_dense(X), _dense(b); tol, verbose)
 
 function basis_mat(G::Matrix, idxi::Vector, idxd::Vector)
     Nf, Nd = length(idxi), length(idxd)
