@@ -4,7 +4,7 @@ println("TOOLS")
 println("."^60)
 println()
 
-# DEPRECATED: see NDHistograms
+# DEPRECATED: see NDHistograms.jl
 # ## --------------------------------------------------------
 # # _find_nearest
 # let
