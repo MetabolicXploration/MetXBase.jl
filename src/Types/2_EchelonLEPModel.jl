@@ -18,15 +18,25 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
         Nd, Ni = size(G)
         
         # Check dimensions
-        @assert Nd + Ni == N "Dimension mismatch: Nd ($Nd) + Ni ($Ni) ≠ N ($N)"
-        @assert length(idxi) == Ni "Length of idxi ($(length(idxi))) ≠ Ni ($Ni)"
-        @assert length(idxd) == Nd "Length of idxd ($(length(idxd))) ≠ Nd ($Nd)"
-        @assert length(idxmap_inv) == N "Length of idxmap_inv ($(length(idxmap_inv))) ≠ N ($N)"
+        @assert Nd + Ni == N "Dimension mismatch: Nd ($Nd) + Ni ($Ni) != N ($N)"
+        @assert length(idxi) == Ni "Length of idxi ($(length(idxi))) != Ni ($Ni)"
+        @assert length(idxd) == Nd "Length of idxd ($(length(idxd))) != Nd ($Nd)"
+        @assert length(idxmap_inv) == N "Length of idxmap_inv ($(length(idxmap_inv))) != N ($N)"
         
         # Check that idxi and idxd are valid indices
-        @assert all(1 .<= idxi .<= N) "Invalid indices in idxi"
-        @assert all(1 .<= idxd .<= N) "Invalid indices in idxd"
+        @assert all(x -> 1 <= x <= N, idxi) "Invalid indices in idxi"
+        @assert all(x -> 1 <= x <= N, idxd) "Invalid indices in idxd"
+        
+        # Check for duplicates
+        @assert allunique(idxi) "idxi must not contain duplicates"
+        @assert allunique(idxd) "idxd must not contain duplicates"
+        
+        # Check that idxi and idxd are disjoint and partition 1:N
         @assert isempty(intersect(idxi, idxd)) "idxi and idxd must be disjoint"
+        @assert sort([idxi; idxd]) == collect(1:N) "idxi and idxd must partition 1:N"
+        
+        # Check that idxmap_inv is a valid permutation
+        @assert sort(idxmap_inv) == collect(1:N) "idxmap_inv must be a permutation of 1:N"
         
         new{MT, VT}(lep, G, idxi, idxd, idxmap_inv, extras)
     end
