@@ -12,9 +12,23 @@ struct EchelonLEPModel{MT, VT} <: AbstractLEPModel
     # extras
     extras::Dict
 
-    function EchelonLEPModel(lep::LEPModel{MT, VT}, G::MT, idxi::Vector{Int}, idxd::Vector{Int}, idxmap_inv::Vector{Int}) where {MT, VT}
-        # TODO: Add consistency checks (between lep and G, ...)
-        new{MT, VT}(lep, G, idxi, idxd, idxmap_inv)
+    function EchelonLEPModel(lep::LEPModel{MT, VT}, G::MT, idxi::Vector{Int}, idxd::Vector{Int}, idxmap_inv::Vector{Int}, extras::Dict = Dict()) where {MT, VT}
+        # Consistency checks between lep and G
+        M, N = size(lep.S)
+        Nd, Ni = size(G)
+        
+        # Check dimensions
+        @assert Nd + Ni == N "Dimension mismatch: Nd ($Nd) + Ni ($Ni) ≠ N ($N)"
+        @assert length(idxi) == Ni "Length of idxi ($(length(idxi))) ≠ Ni ($Ni)"
+        @assert length(idxd) == Nd "Length of idxd ($(length(idxd))) ≠ Nd ($Nd)"
+        @assert length(idxmap_inv) == N "Length of idxmap_inv ($(length(idxmap_inv))) ≠ N ($N)"
+        
+        # Check that idxi and idxd are valid indices
+        @assert all(1 .<= idxi .<= N) "Invalid indices in idxi"
+        @assert all(1 .<= idxd .<= N) "Invalid indices in idxd"
+        @assert isempty(intersect(idxi, idxd)) "idxi and idxd must be disjoint"
+        
+        new{MT, VT}(lep, G, idxi, idxd, idxmap_inv, extras)
     end
 
     function EchelonLEPModel(lep::LEPModel{MT, VT}; tol = 1e-10, verbose = false) where {MT, VT}

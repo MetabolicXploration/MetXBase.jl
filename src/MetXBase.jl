@@ -21,13 +21,15 @@ module MetXBase
     using LinearAlgebra: inv!
     using StringRepFilter
     using Base.Threads
-    using MassExport
     
     import Printf: @sprintf
     import SpecialFunctions: erf
     import MAT
 
     #! include .
+    
+    # Include mass_export utilities first (provides @exportall macros)
+    include("Utils/mass_export.jl")
 
     #! include Types
     include("Types/0_AbstractLEPModels.jl")
